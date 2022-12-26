@@ -2,15 +2,13 @@ import React from 'react';
 import {HashRouter, Routes, Route, Link} from 'react-router-dom';
 import {createRoot} from 'react-dom/client';
 import Home from './pages/Home';
-
-if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('sw.js');
-};
+import PWABanner from './components/PWABanner';
 
 const App = () => {
-    return (
+    return (<>
         <Home />
-    );
+        <PWABanner />
+    </>);
 }
 
 const root = createRoot(document.getElementById('app') as HTMLElement);

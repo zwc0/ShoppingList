@@ -2,8 +2,12 @@
   "name": "as",
   "description": "Animal Sounds PWA",
   "scripts": {
-    "watch": "npx webpack --config webpack.config.js -w",
-    "build": "npx webpack --config webpack.config.js --mode production"
+    "watch:webpack": "npx webpack --config webpack.config.js -w",
+    "watch:tailwind": "npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --watch",
+    "watch": "npm start watch:webpack && npm start watch:tailwind",
+    "build:webpack": "npx webpack --config webpack.config.js --mode production",
+    "build:tailwind": "npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --minify",
+    "build": "npm run build:webpack && npm run build:tailwind"
   },
   "repository": {
     "type": "git",
