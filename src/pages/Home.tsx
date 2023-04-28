@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'preact/hooks';
 
 type TListItem = {
     done: boolean;
@@ -6,14 +6,15 @@ type TListItem = {
     children: TListItem[];
 };
 
-const ListItem: React.FunctionComponent<TListItem & {
-        onClickTitle: any;
-        onChangeDone: any;
-        removeItem: any;
-        editTitle: any;
-        className?: string;
-    }> =
-({done, title, children, onClickTitle, onChangeDone, removeItem, editTitle, className = ''}) => {
+const ListItem =
+({done, title, children, onClickTitle, onChangeDone, removeItem, editTitle, className = ''}
+: TListItem & {
+    onClickTitle: any;
+    onChangeDone: any;
+    removeItem: any;
+    editTitle: any;
+    className?: string;
+}) => {
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [newTitle, setNewTitle] = useState<string>(title);
     const saveNewTitle = () => {
@@ -21,22 +22,27 @@ const ListItem: React.FunctionComponent<TListItem & {
         setIsEdit(false);
     }
     return (
-        <div className={'flex gap-2 items-center ' + className}>
+        <div class={'flex gap-2 items-center ' + className}>
             <div>
-                <input type="checkbox" checked={done} onChange={({target})=>onChangeDone({title, done: target.checked})} />
+                <input type="checkbox" checked={done} onChange={()=>onChangeDone({title, done: !done})} />
             </div>
             {isEdit
-                ? <input className='grow border border-blue-800 rounded-md' value={newTitle} onChange={({target})=>setNewTitle(target.value)} />
-                : <div className={`grow ${done && 'line-through'}`} onClick={()=>onClickTitle({title})}>
+                ? <input class='grow border border-blue-800 rounded-md'
+                    value={newTitle}
+                    onInput={({currentTarget})=>setNewTitle(currentTarget.value)} />
+                : <div class={`grow ${done && 'line-through'}`} onClick={()=>onClickTitle({title})}>
                     {title}
                 </div>
             }
             <div>
                 {isEdit
-                ? <button type="button" className='bg-blue-800 rounded-md p-1 px-2 mr-4 text-white' onClick={saveNewTitle}>Save</button>
-                : <button type="button" className='bg-blue-800 rounded-md p-1 px-2 mr-4 text-white' onClick={()=>setIsEdit(true)}>Edit</button>
+                ? <button type="button"
+                    class='bg-blue-800 rounded-md p-1 px-2 mr-4 text-white' onClick={saveNewTitle}>Save</button>
+                : <button type="button"
+                    class='bg-blue-800 rounded-md p-1 px-2 mr-4 text-white' onClick={()=>setIsEdit(true)}>Edit</button>
                 }
-                <button type="button" className='bg-red-600 rounded-md p-1 px-2 text-white' onClick={()=>{removeItem({title})}}>Delete</button>
+                <button type="button"
+                    class='bg-red-600 rounded-md p-1 px-2 text-white' onClick={()=>{removeItem({title})}}>Delete</button>
             </div>
         </div>
     )
@@ -121,7 +127,10 @@ const Home = () => {
     return (
         <>
             <div>
-                {indexArr.length > 0 && <button type="button" className='bg-blue-800 rounded-md p-1 px-2 mr-4 text-white' onClick={back}>Back</button>}
+                {
+                    indexArr.length > 0 && <button type="button"
+                        class='bg-blue-800 rounded-md p-1 px-2 mr-4 text-white' onClick={back}>Back</button>
+                }
                 {indexArr.join(' - ')}
             </div>
             <div className="grid divide-blue-800 divide-y gap-1">
@@ -132,8 +141,9 @@ const Home = () => {
                 ))}
             </div>
             <div className='flex gap-4 pt-2'>
-                <input className='grow border border-blue-800 rounded-md' value={newTitle} onChange={({target})=>{setNewTitle(target.value)}} />
-                <button type="button" className='bg-blue-800 rounded-md p-1 px-2 text-white' onClick={addItem}>Add Item</button>
+                <input class='grow border border-blue-800 rounded-md'
+                    value={newTitle} onChange={({currentTarget})=>{setNewTitle(currentTarget.value)}} />
+                <button type="button" class='bg-blue-800 rounded-md p-1 px-2 text-white' onClick={addItem}>Add Item</button>
             </div>
         </>
     );

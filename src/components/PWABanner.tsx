@@ -1,4 +1,4 @@
-import React, {FC, useState, useEffect} from 'react';
+import {useState, useEffect} from 'preact/hooks';
 
 let refreshing;
 if (navigator?.serviceWorker)
@@ -9,7 +9,7 @@ if (navigator?.serviceWorker)
     });
 
 export default () => {
-    const [waitingWorker, setWaitingWorker] = React.useState<ServiceWorker | null>(null);
+    const [waitingWorker, setWaitingWorker] = useState<ServiceWorker | null>(null);
   
     useEffect(() => {
         if(!('serviceWorker' in navigator))
