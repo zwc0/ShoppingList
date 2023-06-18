@@ -17,7 +17,9 @@ const ListItem =
 }) => {
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [newTitle, setNewTitle] = useState<string>(title);
-    const saveNewTitle = () => {
+    const saveNewTitle = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
         editTitle(title, newTitle);
         setIsEdit(false);
     }
@@ -30,11 +32,11 @@ const ListItem =
                 ? <input class='grow border border-blue-800 rounded-md'
                     value={newTitle}
                     onInput={({currentTarget})=>setNewTitle(currentTarget.value)} />
-                : <div class={`grow ${done && 'line-through'}`} onClick={()=>onClickTitle({title})}>
+                : <div class={`grow ${!done ? '' : 'line-through'}`} onClick={()=>onClickTitle({title})}>
                     {title}
                 </div>
             }
-            <div>
+            <div class="min-w-fit">
                 {isEdit
                 ? <button type="button"
                     class='bg-blue-800 rounded-md p-1 px-2 mr-4 text-white' onClick={saveNewTitle}>Save</button>
@@ -85,6 +87,9 @@ const Home = () => {
         setNewTitle('');
     }
     const removeItem = ({title}) => {
+        const doDelete = confirm('Delete item?');
+        if (!doDelete)
+            return;
         const newList = clone(list);
         const newCurrList = getCurrList(indexArr, newList);
         const index = newCurrList.findIndex(x=>x.title === title);

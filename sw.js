@@ -1,4 +1,4 @@
-const cacheName = 'v1.1.0.0';
+const cacheName = 'v1.1.1.0';
 const cacheFiles = [
     './dist/app.css',
     './dist/app.js',
