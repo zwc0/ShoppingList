@@ -31,7 +31,6 @@ const ListItem =
     const dragRef = useRef<any>(null);
     useEffect(()=>{
         const off = on(dragRef.current, 'dragstart', (e)=>{
-            alert('test');
             const {clientX: xStart, clientY: yStart, target} = e;
             
             const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
@@ -249,7 +248,7 @@ const Home = () => {
     return (
         <>
             <div class='flex flex-wrap items-center mb-2'>
-				<h1 class="grow text-2xl text-center">Shopping List 2</h1>
+				<h1 class="grow text-2xl text-center">Shopping List</h1>
 				<label class="bg-blue-800 rounded-md p-1 px-2 mr-4 text-white">
 					Import
 					<input type="file" accept=".json" onChange={importList} class="hidden" />
