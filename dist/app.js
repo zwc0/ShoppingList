@@ -189,6 +189,7 @@ function on(target, key, fn, opts) {
     target.addEventListener(key, fn, opts ?? false);
     return () => target.removeEventListener(key, fn, opts ?? false);
 }
+const reorderDiffMin = 50;
 const Home = () => {
     const [list, setList] = (0,preact_hooks__WEBPACK_IMPORTED_MODULE_1__.useState)(initList());
     const [isDark, setIsDark] = (0,preact_hooks__WEBPACK_IMPORTED_MODULE_1__.useState)(tryParseJson(localStorage.getItem('shoppingListDark') || false) || false);
@@ -227,8 +228,8 @@ const Home = () => {
                 clear();
             });
             const offMove = on(document.body, 'pointermove', ({ clientY, clientX }) => {
-                if ((+new Date() - date) < (1000) && ((yStart - clientY) > 20
-                    || (xStart - clientX) > 20)) {
+                if ((+new Date() - date) < (1000) && ((yStart - clientY) > reorderDiffMin
+                    || (xStart - clientX) > reorderDiffMin)) {
                     offUp();
                     offMove();
                 }

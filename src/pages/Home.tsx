@@ -89,7 +89,7 @@ function on<K extends keyof HTMLElementEventMap>(
     target.addEventListener(key, fn, opts ?? false);
     return () => target.removeEventListener(key, fn, opts ?? false);
 }
-
+const reorderDiffMin = 50;
 const Home = () => {
     const [list, setList] = useState<TListItem[]>(initList());
 	const [isDark, setIsDark] = useState(tryParseJson(localStorage.getItem('shoppingListDark') || false) || false);
@@ -134,8 +134,8 @@ const Home = () => {
 
             const offMove = on(document.body, 'pointermove', ({clientY, clientX})=>{
                 if ((+new Date() - date) < (1000) && (
-                    (yStart - clientY) > 20
-                    || (xStart - clientX) > 20
+                    (yStart - clientY) > reorderDiffMin
+                    || (xStart - clientX) > reorderDiffMin
                 )){
                     offUp();
                     offMove();
