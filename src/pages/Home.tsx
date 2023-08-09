@@ -283,7 +283,7 @@ const Home = () => {
                 }
                 {indexArr.join(' - ')}
             </div>
-            <div ref={dragRef} className="grid divide-blue-800 divide-y gap-1">
+            <div ref={dragRef} style={{touchAction: 'none'}} className="grid divide-blue-800 divide-y gap-1">
                 {currList.map(li=>(
                     <ListItem className="pt-1" key={li.title} done={li.done} title={li.title} children={li.children}
                         onClickTitle={onClickTitle} onChangeDone={onChangeDone}
