@@ -100,8 +100,7 @@ const Home = () => {
     
     const dragRef = useRef<HTMLDivElement>(null);
     useEffect(()=>{
-        const off = on(dragRef.current, 'mousedown', ({clientX: xStart, clientY: yStart, target})=>{
-            console.log('down');
+        const off = on(dragRef.current, 'pointerdown', ({clientX: xStart, clientY: yStart, target})=>{
             const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
             if (!item)
                 return;
@@ -113,7 +112,7 @@ const Home = () => {
                 offMove();
             }
             
-            const offUp = on(document.body, 'mouseup', (e)=>{
+            const offUp = on(document.body, 'pointerup', (e)=>{
                 if ((+new Date() - date) < 1000)
                     return clear();
                 const {target} = e;
@@ -123,7 +122,6 @@ const Home = () => {
                 const index = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
                 if (index === startIndex)
                     return clear();
-                console.log({index, startIndex});
 
                 setList((list)=>{
                     const newList = clone(list);
@@ -134,7 +132,7 @@ const Home = () => {
                 clear();
             });
 
-            const offMove = on(document.body, 'mousemove', ({clientY, clientX})=>{
+            const offMove = on(document.body, 'pointermove', ({clientY, clientX})=>{
                 if ((+new Date() - date) < (1000) && (
                     (yStart - clientY) > 20
                     || (xStart - clientX) > 20
