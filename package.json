@@ -1,7 +1,7 @@
 {
-  "name": "as",
-  "version": "1.1.3.0",
-  "description": "Animal Sounds PWA",
+  "name": "shoppinglist",
+  "version": "1.1.4.0",
+  "description": "Shopping List",
   "scripts": {
     "watch:webpack": "npx webpack --config webpack.config.js -w",
     "watch:tailwind": "npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --watch",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zwc0/as.git"
+    "url": "git+https://github.com/zwc0/ShoppingList.git"
   },
   "devDependencies": {
     "preact": "^10.13.2",

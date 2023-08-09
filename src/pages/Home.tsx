@@ -78,6 +78,18 @@ const getCurrList = (indexArr: string[], list: TListItem[]) => {
 
 const clone: <T>(json: T) => T = (json) => JSON.parse(JSON.stringify(json));
 
+function on<K extends keyof HTMLElementEventMap>(
+    target: HTMLElement | undefined | null,
+    key: K,
+    fn: (e: HTMLElementEventMap[K]) => void,
+    opts?: AddEventListenerOptions
+){
+    if (!target)
+        return ()=>{};
+    target.addEventListener(key, fn, opts ?? false);
+    return () => target.removeEventListener(key, fn, opts ?? false);
+}
+
 const Home = () => {
     const [list, setList] = useState<TListItem[]>(initList());
 	const [isDark, setIsDark] = useState(tryParseJson(localStorage.getItem('shoppingListDark') || false) || false);
@@ -85,6 +97,55 @@ const Home = () => {
     const [indexArr, setIndexArr] = useState<string[]>([]);
     const refInputAdd = useRef<HTMLInputElement>(null);
     const currList = getCurrList(indexArr, list);
+    
+    const dragRef = useRef<HTMLDivElement>(null);
+    useEffect(()=>{
+        const off = on(dragRef.current, 'mousedown', ({clientX: xStart, clientY: yStart, target})=>{
+            console.log('down');
+            const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
+            if (!item)
+                return;
+            const startIndex = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
+            const date = +new Date();
+
+            function clear(){
+                offUp();
+                offMove();
+            }
+            
+            const offUp = on(document.body, 'mouseup', (e)=>{
+                if ((+new Date() - date) < 1000)
+                    return clear();
+                const {target} = e;
+                const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
+                if (!item)
+                    return clear();
+                const index = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
+                if (index === startIndex)
+                    return clear();
+                console.log({index, startIndex});
+
+                setList((list)=>{
+                    const newList = clone(list);
+                    const newCurrList = getCurrList(indexArr, newList);
+                    newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
+                    return newList;
+                });
+                clear();
+            });
+
+            const offMove = on(document.body, 'mousemove', ({clientY, clientX})=>{
+                if ((+new Date() - date) < (1000) && (
+                    (yStart - clientY) > 20
+                    || (xStart - clientX) > 20
+                )){
+                    offUp();
+                    offMove();
+                }
+            });
+        });
+        return off;
+    }, [])
 
 	useEffect(()=>{
 		document.body.classList.toggle('dark', isDark);
@@ -219,7 +280,7 @@ const Home = () => {
                 }
                 {indexArr.join(' - ')}
             </div>
-            <div className="grid divide-blue-800 divide-y gap-1">
+            <div ref={dragRef} className="grid divide-blue-800 divide-y gap-1">
                 {currList.map(li=>(
                     <ListItem className="pt-1" key={li.title} done={li.done} title={li.title} children={li.children}
                         onClickTitle={onClickTitle} onChangeDone={onChangeDone}
