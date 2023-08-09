@@ -288,7 +288,7 @@ const Home = () => {
             </div>
             <div ref={dragRef} className="grid divide-blue-800 divide-y gap-1">
                 {currList.map((li, i)=>(
-                    <ListItem className="pt-1" key={i} done={li.done} title={li.title} children={li.children}
+                    <ListItem className="pt-1" key={+new Date()} done={li.done} title={li.title} children={li.children}
                         onClickTitle={onClickTitle} onChangeDone={onChangeDone}
                         removeItem={removeItem} editTitle={editTitle} onMove={(startIndex, index)=>{
                             setList((list)=>{

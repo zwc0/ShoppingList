@@ -351,7 +351,7 @@ const Home = () => {
                             newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
                             return newList;
                         });
-                    } }, i))) }), (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("form", { className: 'flex gap-4 pt-2', onSubmit: addItem, children: [(0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { ref: refInputAdd, class: 'grow border border-blue-800 rounded-md text-black', value: newTitle, onChange: ({ currentTarget }) => { setNewTitle(currentTarget.value); } }), (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { type: "submit", class: 'bg-blue-800 rounded-md p-1 px-2 text-white', children: "Add Item" })] })] }));
+                    } }, +new Date()))) }), (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("form", { className: 'flex gap-4 pt-2', onSubmit: addItem, children: [(0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { ref: refInputAdd, class: 'grow border border-blue-800 rounded-md text-black', value: newTitle, onChange: ({ currentTarget }) => { setNewTitle(currentTarget.value); } }), (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { type: "submit", class: 'bg-blue-800 rounded-md p-1 px-2 text-white', children: "Add Item" })] })] }));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Home);
 
@@ -364,7 +364,7 @@ const Home = () => {
   \**********************/
 /***/ ((module) => {
 
-module.exports = JSON.parse('{"name":"shoppinglist","version":"1.1.5.8","description":"Shopping List","scripts":{"watch:webpack":"npx webpack --config webpack.config.js -w","watch:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --watch","watch":"npm start watch:webpack && npm start watch:tailwind","build:webpack":"npx webpack --config webpack.config.js --mode production","build:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --minify","build":"npm run build:webpack && npm run build:tailwind"},"repository":{"type":"git","url":"git+https://github.com/zwc0/ShoppingList.git"},"devDependencies":{"preact":"^10.13.2","tailwindcss":"^3.3.2","typescript":"^4.9.3","webpack":"^5.81.0","webpack-cli":"^5.0.2"},"dependencies":{"ts-loader":"^9.4.2"}}');
+module.exports = JSON.parse('{"name":"shoppinglist","version":"1.1.5.9","description":"Shopping List","scripts":{"watch:webpack":"npx webpack --config webpack.config.js -w","watch:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --watch","watch":"npm start watch:webpack && npm start watch:tailwind","build:webpack":"npx webpack --config webpack.config.js --mode production","build:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --minify","build":"npm run build:webpack && npm run build:tailwind"},"repository":{"type":"git","url":"git+https://github.com/zwc0/ShoppingList.git"},"devDependencies":{"preact":"^10.13.2","tailwindcss":"^3.3.2","typescript":"^4.9.3","webpack":"^5.81.0","webpack-cli":"^5.0.2"},"dependencies":{"ts-loader":"^9.4.2"}}');
 
 /***/ })
 
