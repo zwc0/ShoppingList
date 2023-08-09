@@ -164,15 +164,14 @@ const ListItem = ({ done, title, children, onClickTitle, onChangeDone, removeIte
             if (!item)
                 return;
             const startIndex = [...item.parentElement?.children ?? item].findIndex(e => e === item);
-            alert('test');
             function clear() {
                 offUp();
                 offOver();
                 offTouchStart();
                 offTouchMove();
             }
-            const offTouchStart = on(document.body, 'touchstart', e => e.preventDefault());
-            const offTouchMove = on(document.body, 'touchmove', e => e.preventDefault());
+            const offTouchStart = on(document.body, 'touchstart', e => e.preventDefault(), { passive: false });
+            const offTouchMove = on(document.body, 'touchmove', e => e.preventDefault(), { passive: false });
             const offOver = on(document.body, 'dragover', e => {
                 e.preventDefault();
             });
