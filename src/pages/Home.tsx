@@ -100,12 +100,9 @@ const Home = () => {
     const [indexArr, setIndexArr] = useState<string[]>([]);
     const refInputAdd = useRef<HTMLInputElement>(null);
     const currList = getCurrList(indexArr, list);
-    const [force, setForce] = useState(0);
-    console.log(force);
     const dragRef = useRef<HTMLDivElement>(null);
     useEffect(()=>{
         const off = on(dragRef.current, 'pointerdown', ({clientX: xStart, clientY: yStart, target})=>{
-            console.log('down');
             const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
             if (!item)
                 return;
@@ -127,15 +124,18 @@ const Home = () => {
                 const index = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
                 if (index === startIndex)
                     return clear();
-                console.log({index, startIndex});
 
                 setList((list)=>{
                     const newList = clone(list);
-                    const newCurrList = getCurrList(indexArr, newList);
+                    let newCurrList;
+                    setIndexArr(arr=>{
+                        newCurrList = getCurrList(arr, newList);
+                        return arr;
+                    });
                     newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
+                    console.log({list, newList});
                     return newList;
                 });
-                setForce(+new Date());
                 clear();
             });
 
