@@ -130,14 +130,12 @@ const Home = () => {
                     return clear();
                 console.log({index, startIndex});
 
-                setTimeout(()=>{
-                    setList((list)=>{
-                        const newList = clone(list);
-                        const newCurrList = getCurrList(indexArr, newList);
-                        newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
-                        return newList;
-                    });
-                }, 500);
+                setList((list)=>{
+                    const newList = clone(list);
+                    const newCurrList = getCurrList(indexArr, newList);
+                    newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
+                    return newList;
+                });
                 clear();
             });
 
@@ -289,8 +287,8 @@ const Home = () => {
                 {indexArr.join(' - ')}
             </div>
             <div ref={dragRef} className="grid divide-blue-800 divide-y gap-1">
-                {currList.map(li=>(
-                    <ListItem className="pt-1" key={li.title} done={li.done} title={li.title} children={li.children}
+                {currList.map((li, i)=>(
+                    <ListItem className="pt-1" key={i} done={li.done} title={li.title} children={li.children}
                         onClickTitle={onClickTitle} onChangeDone={onChangeDone}
                         removeItem={removeItem} editTitle={editTitle} onMove={(startIndex, index)=>{
                             setList((list)=>{
