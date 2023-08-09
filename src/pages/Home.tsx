@@ -100,7 +100,10 @@ const Home = () => {
     
     const dragRef = useRef<HTMLDivElement>(null);
     useEffect(()=>{
-        const off = on(dragRef.current, 'pointerdown', ({clientX: xStart, clientY: yStart, target})=>{
+        const off = on(dragRef.current, 'pointerdown', (e)=>{
+            const {clientX: xStart, clientY: yStart, target} = e;
+            e.preventDefault();
+            
             const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
             if (!item)
                 return;
@@ -132,7 +135,9 @@ const Home = () => {
                 clear();
             });
 
-            const offMove = on(document.body, 'pointermove', ({clientY, clientX})=>{
+            const offMove = on(document.body, 'pointermove', (e)=>{
+                const {clientY, clientX} = e;
+                e.preventDefault();
                 if ((+new Date() - date) < (1000) && (
                     (yStart - clientY) > reorderDiffMin
                     || (xStart - clientX) > reorderDiffMin

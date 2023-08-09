@@ -199,7 +199,9 @@ const Home = () => {
     const currList = getCurrList(indexArr, list);
     const dragRef = (0,preact_hooks__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
     (0,preact_hooks__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-        const off = on(dragRef.current, 'pointerdown', ({ clientX: xStart, clientY: yStart, target }) => {
+        const off = on(dragRef.current, 'pointerdown', (e) => {
+            const { clientX: xStart, clientY: yStart, target } = e;
+            e.preventDefault();
             const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
             if (!item)
                 return;
@@ -227,7 +229,9 @@ const Home = () => {
                 });
                 clear();
             });
-            const offMove = on(document.body, 'pointermove', ({ clientY, clientX }) => {
+            const offMove = on(document.body, 'pointermove', (e) => {
+                const { clientY, clientX } = e;
+                e.preventDefault();
                 if ((+new Date() - date) < (1000) && ((yStart - clientY) > reorderDiffMin
                     || (xStart - clientX) > reorderDiffMin)) {
                     offUp();
