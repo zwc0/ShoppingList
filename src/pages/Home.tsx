@@ -139,7 +139,7 @@ const Home = () => {
                 const newList = clone(list);
                 const newCurrList = getCurrList(indexArr, newList);
                 newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
-                alert(newList);
+                alert(JSON.stringify(newList));
                 // setList(newList);
                 clear();
             });
