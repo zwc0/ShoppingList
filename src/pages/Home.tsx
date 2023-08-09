@@ -41,7 +41,12 @@ const ListItem =
             function clear(){
                 offUp();
                 offOver();
+                offTouchStart();
+                offTouchMove();
             }
+
+            const offTouchStart = on(document.body, 'touchstart', e=>e.preventDefault());
+            const offTouchMove = on(document.body, 'touchmove', e=>e.preventDefault());
 
             const offOver = on(document.body, 'dragover', e=>{
                 e.preventDefault();
