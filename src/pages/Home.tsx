@@ -37,7 +37,7 @@ const ListItem =
             if (!item)
                 return;
             const startIndex = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
-
+            alert('test')
             function clear(){
                 offUp();
                 offOver();
