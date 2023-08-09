@@ -8,10 +8,11 @@ type TListItem = {
 };
 
 const ListItem =
-({done, title, children, onClickTitle, onChangeDone, removeItem, editTitle, className = ''}
+({done, title, children, onClickTitle, onChangeDone, removeItem, editTitle, className = '', onMove}
 : TListItem & {
     onClickTitle: any;
     onChangeDone: any;
+    onMove: any;
     removeItem: any;
     editTitle: any;
     className?: string;
@@ -26,8 +27,44 @@ const ListItem =
         setIsEdit(false);
     }
 	useEffect(()=>{refInput.current?.focus()}, [isEdit]);
+
+    const dragRef = useRef<any>(null);
+    useEffect(()=>{
+        const off = on(dragRef.current, 'dragstart', (e)=>{
+            const {clientX: xStart, clientY: yStart, target} = e;
+            
+            const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
+            if (!item)
+                return;
+            const startIndex = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
+
+            function clear(){
+                offUp();
+                offOver();
+            }
+
+            const offOver = on(document.body, 'dragover', e=>{
+                e.preventDefault();
+            })
+
+            const offUp = on(document.body, 'drop', e=>{
+                const {target} = e;
+                const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
+                if (!item)
+                    return clear();
+                const index = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
+                if (index === startIndex)
+                    return clear();
+                console.log({index, startIndex});
+                onMove(startIndex, index);
+                clear();
+            })
+        });
+        return off;
+    }, []);
+
     return (
-        <form class={'flex gap-2 items-center ' + className} onSubmit={saveNewTitle}>
+        <form ref={dragRef} draggable={true} class={'flex gap-2 items-center ' + className} onSubmit={saveNewTitle}>
             <div>
                 <input type="checkbox" checked={done} onChange={()=>onChangeDone({title, done: !done})} />
             </div>
@@ -97,58 +134,6 @@ const Home = () => {
     const [indexArr, setIndexArr] = useState<string[]>([]);
     const refInputAdd = useRef<HTMLInputElement>(null);
     const currList = getCurrList(indexArr, list);
-    
-    const dragRef = useRef<HTMLDivElement>(null);
-    useEffect(()=>{
-        const off = on(dragRef.current, 'pointerdown', (e)=>{
-            const {clientX: xStart, clientY: yStart, target} = e;
-            e.preventDefault();
-            
-            const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
-            if (!item)
-                return;
-            const startIndex = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
-            const date = +new Date();
-
-            function clear(){
-                offUp();
-                offMove();
-            }
-            
-            const offUp = on(document.body, 'pointerup', (e)=>{
-                if ((+new Date() - date) < 1000)
-                    return clear();
-                const {target} = e;
-                const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
-                if (!item)
-                    return clear();
-                const index = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
-                if (index === startIndex)
-                    return clear();
-
-                setList((list)=>{
-                    const newList = clone(list);
-                    const newCurrList = getCurrList(indexArr, newList);
-                    newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
-                    return newList;
-                });
-                clear();
-            });
-
-            const offMove = on(document.body, 'pointermove', (e)=>{
-                const {clientY, clientX} = e;
-                e.preventDefault();
-                if ((+new Date() - date) < (1000) && (
-                    (yStart - clientY) > reorderDiffMin
-                    || (xStart - clientX) > reorderDiffMin
-                )){
-                    offUp();
-                    offMove();
-                }
-            });
-        });
-        return off;
-    }, [])
 
 	useEffect(()=>{
 		document.body.classList.toggle('dark', isDark);
@@ -283,11 +268,18 @@ const Home = () => {
                 }
                 {indexArr.join(' - ')}
             </div>
-            <div ref={dragRef} style={{touchAction: 'none'}} className="grid divide-blue-800 divide-y gap-1">
+            <div className="grid divide-blue-800 divide-y gap-1">
                 {currList.map(li=>(
                     <ListItem className="pt-1" key={li.title} done={li.done} title={li.title} children={li.children}
                         onClickTitle={onClickTitle} onChangeDone={onChangeDone}
-                        removeItem={removeItem} editTitle={editTitle} />
+                        removeItem={removeItem} editTitle={editTitle} onMove={(startIndex, index)=>{
+                            setList((list)=>{
+                                const newList = clone(list);
+                                const newCurrList = getCurrList(indexArr, newList);
+                                newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
+                                return newList;
+                            });
+                        }} />
                 ))}
             </div>
             <form className='flex gap-4 pt-2' onSubmit={addItem}>
