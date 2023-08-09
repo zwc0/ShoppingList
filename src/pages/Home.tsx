@@ -41,12 +41,12 @@ const ListItem =
             function clear(){
                 offUp();
                 offOver();
-                offTouchStart();
-                offTouchMove();
+                // offTouchStart();
+                // offTouchMove();
             }
 
-            const offTouchStart = on(document.body, 'touchstart', e=>e.preventDefault(), {passive: false});
-            const offTouchMove = on(document.body, 'touchmove', e=>e.preventDefault(), {passive: false});
+            // const offTouchStart = on(document.body, 'touchstart', e=>e.preventDefault(), {passive: false});
+            // const offTouchMove = on(document.body, 'touchmove', e=>e.preventDefault(), {passive: false});
 
             const offOver = on(document.body, 'dragover', e=>{
                 e.preventDefault();
@@ -70,7 +70,7 @@ const ListItem =
     }, []);
 
     return (
-        <form ref={dragRef} draggable={true} class={'flex gap-2 items-center ' + className} onSubmit={saveNewTitle}>
+        <form style={{touchAction: 'none'}} ref={dragRef} draggable={true} class={'flex gap-2 items-center ' + className} onSubmit={saveNewTitle}>
             <div>
                 <input type="checkbox" checked={done} onChange={()=>onChangeDone({title, done: !done})} />
             </div>

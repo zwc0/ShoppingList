@@ -1,6 +1,6 @@
 /// <reference lib="webworker" />
-import {version} from '../package.json';
-const cacheName = 'v'+version;
+import pkg from '../package.json';
+const cacheName = 'v'+pkg.version;
 const cacheFiles = [
     './dist/app.css',
     './dist/app.js',

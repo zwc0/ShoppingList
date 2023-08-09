@@ -167,11 +167,11 @@ const ListItem = ({ done, title, children, onClickTitle, onChangeDone, removeIte
             function clear() {
                 offUp();
                 offOver();
-                offTouchStart();
-                offTouchMove();
+                // offTouchStart();
+                // offTouchMove();
             }
-            const offTouchStart = on(document.body, 'touchstart', e => e.preventDefault(), { passive: false });
-            const offTouchMove = on(document.body, 'touchmove', e => e.preventDefault(), { passive: false });
+            // const offTouchStart = on(document.body, 'touchstart', e=>e.preventDefault(), {passive: false});
+            // const offTouchMove = on(document.body, 'touchmove', e=>e.preventDefault(), {passive: false});
             const offOver = on(document.body, 'dragover', e => {
                 e.preventDefault();
             });
@@ -191,7 +191,7 @@ const ListItem = ({ done, title, children, onClickTitle, onChangeDone, removeIte
         });
         return off;
     }, []);
-    return ((0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("form", { ref: dragRef, draggable: true, class: 'flex gap-2 items-center ' + className, onSubmit: saveNewTitle, children: [(0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { children: (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "checkbox", checked: done, onChange: () => onChangeDone({ title, done: !done }) }) }), isEdit
+    return ((0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("form", { style: { touchAction: 'none' }, ref: dragRef, draggable: true, class: 'flex gap-2 items-center ' + className, onSubmit: saveNewTitle, children: [(0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { children: (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "checkbox", checked: done, onChange: () => onChangeDone({ title, done: !done }) }) }), isEdit
                 ? (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { class: 'grow border border-blue-800 rounded-md text-black', ref: refInput, value: newTitle, onInput: ({ currentTarget }) => setNewTitle(currentTarget.value) })
                 : (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { class: `grow ${!done ? '' : 'line-through'}`, onClick: () => onClickTitle({ title }), children: title }), (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { class: "min-w-fit", children: [isEdit
                         ? (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { type: "submit", class: 'bg-blue-800 rounded-md p-1 px-2 mr-4 text-white', children: "Save" })
