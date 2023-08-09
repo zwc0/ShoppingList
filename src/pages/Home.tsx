@@ -129,12 +129,17 @@ const Home = () => {
                     return clear();
                 console.log({index, startIndex});
 
-                setList((list)=>{
-                    const newList = clone(list);
-                    const newCurrList = getCurrList(indexArr, newList);
-                    newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
-                    return newList;
-                });
+                // setList((list)=>{
+                //     const newList = clone(list);
+                //     const newCurrList = getCurrList(indexArr, newList);
+                //     newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
+                //     return newList;
+                // });
+
+                const newList = clone(list);
+                const newCurrList = getCurrList(indexArr, newList);
+                newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
+                setList(newList);
                 clear();
             });
 
