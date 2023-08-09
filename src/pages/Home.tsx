@@ -100,8 +100,8 @@ const Home = () => {
     const [indexArr, setIndexArr] = useState<string[]>([]);
     const refInputAdd = useRef<HTMLInputElement>(null);
     const currList = getCurrList(indexArr, list);
-
-
+    const [force, setForce] = useState(0);
+    console.log(force);
     const dragRef = useRef<HTMLDivElement>(null);
     useEffect(()=>{
         const off = on(dragRef.current, 'pointerdown', ({clientX: xStart, clientY: yStart, target})=>{
@@ -129,18 +129,13 @@ const Home = () => {
                     return clear();
                 console.log({index, startIndex});
 
-                // setList((list)=>{
-                //     const newList = clone(list);
-                //     const newCurrList = getCurrList(indexArr, newList);
-                //     newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
-                //     return newList;
-                // });
-
-                const newList = clone(list);
-                const newCurrList = getCurrList(indexArr, newList);
-                newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
-                alert(JSON.stringify(newList));
-                // setList(newList);
+                setList((list)=>{
+                    const newList = clone(list);
+                    const newCurrList = getCurrList(indexArr, newList);
+                    newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
+                    return newList;
+                });
+                setForce(+new Date());
                 clear();
             });
 
