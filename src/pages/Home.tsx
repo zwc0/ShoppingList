@@ -9,11 +9,10 @@ type TListItem = {
 };
 
 const ListItem =
-({done, title, children, onClickTitle, onChangeDone, removeItem, editTitle, className = '', onMove}
+({done, title, children, onClickTitle, onChangeDone, removeItem, editTitle, className = ''}
 : TListItem & {
     onClickTitle: any;
     onChangeDone: any;
-    onMove: any;
     removeItem: any;
     editTitle: any;
     className?: string;
@@ -129,7 +128,8 @@ const Home = () => {
                 if (index === startIndex)
                     return clear();
                 console.log({index, startIndex});
-
+                e.preventDefault();
+                e.stopPropagation();
                 setList((list)=>{
                     const newList = clone(list);
                     const newCurrList = getCurrList(indexArr, newList);
@@ -290,14 +290,7 @@ const Home = () => {
                 {currList.map((li, i)=>(
                     <ListItem className="pt-1" key={+new Date()} done={li.done} title={li.title} children={li.children}
                         onClickTitle={onClickTitle} onChangeDone={onChangeDone}
-                        removeItem={removeItem} editTitle={editTitle} onMove={(startIndex, index)=>{
-                            setList((list)=>{
-                                const newList = clone(list);
-                                const newCurrList = getCurrList(indexArr, newList);
-                                newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
-                                return newList;
-                            });
-                        }} />
+                        removeItem={removeItem} editTitle={editTitle} />
                 ))}
             </div>
             <form className='flex gap-4 pt-2' onSubmit={addItem}>
