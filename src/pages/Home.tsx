@@ -103,7 +103,7 @@ const Home = () => {
     const dragRef = useRef<HTMLDivElement>(null);
     useEffect(()=>{
         const off = on(dragRef.current, 'touchstart', (e)=>{
-            e.preventDefault();
+            //e.preventDefault();
             const {clientX: xStart, clientY: yStart,} = e.touches[0];
             const {target} = e;
             const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
