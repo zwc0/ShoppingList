@@ -102,9 +102,7 @@ const Home = () => {
     const currList = getCurrList(indexArr, list);
     const dragRef = useRef<HTMLDivElement>(null);
     useEffect(()=>{
-        const off = on(dragRef.current, 'pointerdown', (e)=>{
-            const {clientX: xStart, clientY: yStart, target} = e;
-            e.preventDefault();
+        const off = on(dragRef.current, 'pointerdown', ({clientX: xStart, clientY: yStart, target})=>{
             const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
             if (!item)
                 return;
@@ -126,31 +124,35 @@ const Home = () => {
                 const index = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
                 if (index === startIndex)
                     return clear();
-                e.preventDefault();
 
                 setList((list)=>{
                     const newList = clone(list);
                     let newCurrList;
+                    let indexArr;
                     setIndexArr(arr=>{
+                        indexArr = arr;
                         newCurrList = getCurrList(arr, newList);
                         return arr;
                     });
                     newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
                     console.log({list, newList});
+                    setTimeout(()=>{
+                        //@ts-ignore
+                        e.target?.click?.();
+                        setIndexArr(indexArr);
+                    }, 100);
                     return newList;
                 });
                 clear();
             });
 
             const offMove = on(document.body, 'pointermove', ({clientY, clientX})=>{
-                e.preventDefault();
                 if ((+new Date() - date) < (500) && (
                     (yStart - clientY) > 20
                     || (xStart - clientX) > 20
                 )){
                     offUp();
                     offMove();
-                    return;
                 }
             });
         });
