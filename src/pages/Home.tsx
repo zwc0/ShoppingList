@@ -143,7 +143,9 @@ const Home = () => {
                 // clear();
             });
 
-            const offMove = on(document.body, 'pointermove', ({clientY, clientX})=>{
+            const offMove = on(document.body, 'pointermove', (e)=>{
+                e.preventDefault();
+                const {clientY, clientX} = e;
                 if ((+new Date() - date) < (500) && (
                     (yStart - clientY) > 20
                     || (xStart - clientX) > 20
