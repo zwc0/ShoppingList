@@ -108,6 +108,7 @@ const Home = () => {
                 return;
             const startIndex = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
             const date = +new Date();
+            let overEl;
 
             function clear(){
                 offUp();
@@ -116,16 +117,14 @@ const Home = () => {
             }
 
             const offTouch = on(document.body, 'touchend', (e)=>{
-                const {target} = e;
-                const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
-
-                alert(item?.innerText);
+                const event = new Event('pointerup');
+                e.target?.dispatchEvent(event);
             });
 
             const offUp = on(document.body, 'pointerup', (e)=>{
                 if ((+new Date() - date) < 500)
                     return clear();
-                const {target} = e;
+                const target = overEl;
                 const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
                 if (!item)
                     return clear();
@@ -147,7 +146,9 @@ const Home = () => {
                 clear();
             });
 
-            const offMove = on(document.body, 'pointermove', ({clientY, clientX})=>{
+            const offMove = on(document.body, 'pointermove', (e)=>{
+                overEl = e.target;
+                const {clientY, clientX} = e;
                 if ((+new Date() - date) < (500) && (
                     (yStart - clientY) > 20
                     || (xStart - clientX) > 20
