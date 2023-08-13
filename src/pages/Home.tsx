@@ -125,17 +125,15 @@ const Home = () => {
                 if (index === startIndex)
                     return clear();
 
-                setList((list)=>{
-                    const newList = clone(list);
-                    let newCurrList;
-                    setIndexArr(arr=>{
-                        newCurrList = getCurrList(arr, newList);
-                        return arr;
-                    });
-                    newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
-                    console.log({list, newList});
-                    return newList;
+                const newList = tryParseJson<TListItem[]>(localStorage.getItem('shoppingList')) || [];
+                let newCurrList;
+                setIndexArr(arr=>{
+                    newCurrList = getCurrList(arr, newList);
+                    return arr;
                 });
+                newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
+                console.log({list, newList});
+                setList(newList);
                 clear();
             });
 
