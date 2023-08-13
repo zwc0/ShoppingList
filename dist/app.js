@@ -158,9 +158,9 @@ const ListItem = ({ done, title, children, onClickTitle, onChangeDone, removeIte
         setIsEdit(false);
     };
     (0,preact_hooks__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => { refInput.current?.focus(); }, [isEdit]);
-    return ((0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("form", { draggable: false, class: 'flex gap-2 items-center ' + className, onSubmit: saveNewTitle, children: [(0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { children: (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "checkbox", checked: done, onChange: () => onChangeDone({ title, done: !done }) }) }), isEdit
+    return ((0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("form", { class: 'flex gap-2 items-center ' + className, onSubmit: saveNewTitle, children: [(0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { children: (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "checkbox", checked: done, onChange: () => onChangeDone({ title, done: !done }) }) }), isEdit
                 ? (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { class: 'grow border border-blue-800 rounded-md text-black', ref: refInput, value: newTitle, onInput: ({ currentTarget }) => setNewTitle(currentTarget.value) })
-                : (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { draggable: false, class: `grow ${!done ? '' : 'line-through'}`, onClick: () => onClickTitle({ title }), children: title }), (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { class: "min-w-fit", children: [isEdit
+                : (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { class: `grow touch-none ${!done ? '' : 'line-through'}`, onClick: () => onClickTitle({ title }), children: title }), (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { class: "min-w-fit", children: [isEdit
                         ? (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { type: "submit", class: 'bg-blue-800 rounded-md p-1 px-2 mr-4 text-white', children: "Save" })
                         : (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { type: "button", class: 'bg-blue-800 rounded-md p-1 px-2 mr-4 text-white', onClick: (e) => {
                                 e.preventDefault();
@@ -201,9 +201,7 @@ const Home = () => {
     const currList = getCurrList(indexArr, list);
     const dragRef = (0,preact_hooks__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
     (0,preact_hooks__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-        const off = on(dragRef.current, 'pointerdown', (e) => {
-            e.preventDefault();
-            const { clientX: xStart, clientY: yStart, target } = e;
+        const off = on(dragRef.current, 'pointerdown', ({ clientX: xStart, clientY: yStart, target }) => {
             const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
             if (!item)
                 return;
@@ -214,36 +212,29 @@ const Home = () => {
                 offMove();
             }
             const offUp = on(document.body, 'pointerup', (e) => {
-                e.preventDefault();
-                alert('a');
+                if ((+new Date() - date) < 500)
+                    return clear();
+                const { target } = e;
+                const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
+                if (!item)
+                    return clear();
+                const index = [...item.parentElement?.children ?? item].findIndex(e => e === item);
+                if (index === startIndex)
+                    return clear();
+                setList((list) => {
+                    const newList = clone(list);
+                    let newCurrList;
+                    setIndexArr(arr => {
+                        newCurrList = getCurrList(arr, newList);
+                        return arr;
+                    });
+                    newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
+                    console.log({ list, newList });
+                    return newList;
+                });
                 clear();
-                return;
-                // if ((+new Date() - date) < 500)
-                //     return clear();
-                // const {target} = e;
-                // const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
-                // if (!item)
-                //     return clear();
-                // const index = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
-                // if (index === startIndex)
-                //     return clear();
-                // alert('a');
-                // setList((list)=>{
-                //     const newList = clone(list);
-                //     let newCurrList;
-                //     setIndexArr(arr=>{
-                //         newCurrList = getCurrList(arr, newList);
-                //         return arr;
-                //     });
-                //     newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
-                //     console.log({list, newList});
-                //     return newList;
-                // });
-                // clear();
             });
-            const offMove = on(document.body, 'pointermove', (e) => {
-                e.preventDefault();
-                const { clientY, clientX } = e;
+            const offMove = on(document.body, 'pointermove', ({ clientY, clientX }) => {
                 if ((+new Date() - date) < (500) && ((yStart - clientY) > 20
                     || (xStart - clientX) > 20)) {
                     offUp();
@@ -369,7 +360,7 @@ const Home = () => {
   \**********************/
 /***/ ((module) => {
 
-module.exports = JSON.parse('{"name":"shoppinglist","version":"1.1.5.28","description":"Shopping List","scripts":{"watch:webpack":"npx webpack --config webpack.config.js -w","watch:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --watch","watch":"npm start watch:webpack && npm start watch:tailwind","build:webpack":"npx webpack --config webpack.config.js --mode production","build:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --minify","build":"npm run build:webpack && npm run build:tailwind"},"repository":{"type":"git","url":"git+https://github.com/zwc0/ShoppingList.git"},"devDependencies":{"preact":"^10.13.2","tailwindcss":"^3.3.2","typescript":"^4.9.3","webpack":"^5.81.0","webpack-cli":"^5.0.2"},"dependencies":{"ts-loader":"^9.4.2"}}');
+module.exports = JSON.parse('{"name":"shoppinglist","version":"1.1.5.29","description":"Shopping List","scripts":{"watch:webpack":"npx webpack --config webpack.config.js -w","watch:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --watch","watch":"npm start watch:webpack && npm start watch:tailwind","build:webpack":"npx webpack --config webpack.config.js --mode production","build:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --minify","build":"npm run build:webpack && npm run build:tailwind"},"repository":{"type":"git","url":"git+https://github.com/zwc0/ShoppingList.git"},"devDependencies":{"preact":"^10.13.2","tailwindcss":"^3.3.2","typescript":"^4.9.3","webpack":"^5.81.0","webpack-cli":"^5.0.2"},"dependencies":{"ts-loader":"^9.4.2"}}');
 
 /***/ })
 

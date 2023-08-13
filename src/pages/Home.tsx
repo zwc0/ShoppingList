@@ -30,7 +30,7 @@ const ListItem =
 
 
     return (
-        <form draggable={false} class={'flex gap-2 items-center ' + className} onSubmit={saveNewTitle}>
+        <form class={'flex gap-2 items-center ' + className} onSubmit={saveNewTitle}>
             <div>
                 <input type="checkbox" checked={done} onChange={()=>onChangeDone({title, done: !done})} />
             </div>
@@ -39,7 +39,7 @@ const ListItem =
 					ref={refInput}
                     value={newTitle}
                     onInput={({currentTarget})=>setNewTitle(currentTarget.value)} />
-                : <div draggable={false} class={`grow ${!done ? '' : 'line-through'}`} onClick={()=>onClickTitle({title})}>
+                : <div class={`grow touch-none ${!done ? '' : 'line-through'}`} onClick={()=>onClickTitle({title})}>
                     {title}
                 </div>
             }
@@ -102,9 +102,7 @@ const Home = () => {
     const currList = getCurrList(indexArr, list);
     const dragRef = useRef<HTMLDivElement>(null);
     useEffect(()=>{
-        const off = on(dragRef.current, 'pointerdown', (e)=>{
-            e.preventDefault();
-            const {clientX: xStart, clientY: yStart, target} = e;
+        const off = on(dragRef.current, 'pointerdown', ({clientX: xStart, clientY: yStart, target})=>{
             const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
             if (!item)
                 return;
@@ -117,38 +115,31 @@ const Home = () => {
             }
 
             const offUp = on(document.body, 'pointerup', (e)=>{
-                e.preventDefault();
-                alert('a')
-                clear();
-                return;
-                // if ((+new Date() - date) < 500)
-                //     return clear();
-                // const {target} = e;
-                // const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
-                // if (!item)
-                //     return clear();
-                // const index = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
-                // if (index === startIndex)
-                //     return clear();
+                if ((+new Date() - date) < 500)
+                    return clear();
+                const {target} = e;
+                const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
+                if (!item)
+                    return clear();
+                const index = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
+                if (index === startIndex)
+                    return clear();
 
-                // alert('a');
-                // setList((list)=>{
-                //     const newList = clone(list);
-                //     let newCurrList;
-                //     setIndexArr(arr=>{
-                //         newCurrList = getCurrList(arr, newList);
-                //         return arr;
-                //     });
-                //     newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
-                //     console.log({list, newList});
-                //     return newList;
-                // });
-                // clear();
+                setList((list)=>{
+                    const newList = clone(list);
+                    let newCurrList;
+                    setIndexArr(arr=>{
+                        newCurrList = getCurrList(arr, newList);
+                        return arr;
+                    });
+                    newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
+                    console.log({list, newList});
+                    return newList;
+                });
+                clear();
             });
 
-            const offMove = on(document.body, 'pointermove', (e)=>{
-                e.preventDefault();
-                const {clientY, clientX} = e;
+            const offMove = on(document.body, 'pointermove', ({clientY, clientX})=>{
                 if ((+new Date() - date) < (500) && (
                     (yStart - clientY) > 20
                     || (xStart - clientX) > 20
