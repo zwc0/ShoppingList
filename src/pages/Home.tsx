@@ -47,7 +47,7 @@ const ListItem =
                 {isEdit
                 ? <button type="submit"
                     class='bg-blue-800 rounded-md p-1 px-2 mr-4 text-white'>Save</button>
-                : <button type="button"
+                : <button type="button" style={{pointerEvents: 'none'}}
                     class='bg-blue-800 rounded-md p-1 px-2 mr-4 text-white' onClick={(e)=>{
 						e.preventDefault();
 						e.stopPropagation();
@@ -117,14 +117,12 @@ const Home = () => {
             }
 
             function checkAndMove(){
-                alert('1');
                 if ((+new Date() - date) < 500)
                     return clear();
                 const target = overEl;
                 const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
                 if (!item)
                     return clear();
-                alert(item.textContent);
                 const index = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
                 if (index === startIndex)
                     return clear();
