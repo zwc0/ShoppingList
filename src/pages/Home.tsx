@@ -103,6 +103,7 @@ const Home = () => {
     const dragRef = useRef<HTMLDivElement>(null);
     useEffect(()=>{
         const off = on(dragRef.current, 'touchstart', (e)=>{
+            e.preventDefault();
             const {clientX: xStart, clientY: yStart,} = e.touches[0];
             const {target} = e;
             const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
@@ -119,6 +120,7 @@ const Home = () => {
             const offUp = on(document.body, 'touchend', (e)=>{
                 if ((+new Date() - date) < 500)
                     return clear();
+                e.preventDefault();
                 const {target} = e;
                 const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
                 if (!item)
@@ -139,9 +141,10 @@ const Home = () => {
                     return newList;
                 });
                 clear();
-            });
+            }, {passive: false});
 
             const offMove = on(document.body, 'touchmove', (e)=>{
+                e.preventDefault();
                 const {clientY, clientX} = e.touches[0];
                 if ((+new Date() - date) < (500) && (
                     (yStart - clientY) > 20
@@ -150,8 +153,8 @@ const Home = () => {
                     offUp();
                     offMove();
                 }
-            });
-        });
+            }, {passive: false});
+        }, {passive: false});
         return off;
     }, [])
 
