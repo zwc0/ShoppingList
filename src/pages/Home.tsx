@@ -127,13 +127,17 @@ const Home = () => {
 
                 const newList = tryParseJson<TListItem[]>(localStorage.getItem('shoppingList')) || [];
                 let newCurrList;
+                let indexArr
                 setIndexArr(arr=>{
+                    indexArr = arr;
                     newCurrList = getCurrList(arr, newList);
                     return arr;
                 });
                 newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
                 console.log({list, newList});
                 setList(newList);
+                setIndexArr(['0']);
+                setTimeout(()=>{setIndexArr(indexArr), 500});
                 clear();
             });
 
