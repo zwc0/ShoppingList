@@ -115,8 +115,8 @@ const Home = () => {
             }
 
             const offUp = on(document.body, 'pointerup', (e)=>{
-                if ((+new Date() - date) < 500)
-                    return clear();
+                // if ((+new Date() - date) < 500)
+                //     return clear();
                 const {target} = e;
                 const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
                 if (!item)
