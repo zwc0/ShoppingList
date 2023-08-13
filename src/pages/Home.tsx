@@ -125,6 +125,7 @@ const Home = () => {
                 if (index === startIndex)
                     return clear();
 
+                alert('a');
                 setList((list)=>{
                     const newList = clone(list);
                     let newCurrList;
