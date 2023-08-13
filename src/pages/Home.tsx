@@ -117,12 +117,14 @@ const Home = () => {
             }
 
             function checkAndMove(){
+                alert('1');
                 if ((+new Date() - date) < 500)
                     return clear();
                 const target = overEl;
                 const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
                 if (!item)
                     return clear();
+                alert(item.textContent);
                 const index = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
                 if (index === startIndex)
                     return clear();
