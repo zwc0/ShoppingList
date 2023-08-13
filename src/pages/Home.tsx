@@ -39,7 +39,7 @@ const ListItem =
 					ref={refInput}
                     value={newTitle}
                     onInput={({currentTarget})=>setNewTitle(currentTarget.value)} />
-                : <div class={`grow touch-none ${!done ? '' : 'line-through'}`} onClick={()=>onClickTitle({title})}>
+                : <div class={`grow ${!done ? '' : 'line-through'}`} onClick={()=>onClickTitle({title})}>
                     {title}
                 </div>
             }

@@ -160,7 +160,7 @@ const ListItem = ({ done, title, children, onClickTitle, onChangeDone, removeIte
     (0,preact_hooks__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => { refInput.current?.focus(); }, [isEdit]);
     return ((0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("form", { class: 'flex gap-2 items-center ' + className, onSubmit: saveNewTitle, children: [(0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { children: (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "checkbox", checked: done, onChange: () => onChangeDone({ title, done: !done }) }) }), isEdit
                 ? (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { class: 'grow border border-blue-800 rounded-md text-black', ref: refInput, value: newTitle, onInput: ({ currentTarget }) => setNewTitle(currentTarget.value) })
-                : (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { class: `grow touch-none ${!done ? '' : 'line-through'}`, onClick: () => onClickTitle({ title }), children: title }), (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { class: "min-w-fit", children: [isEdit
+                : (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { class: `grow ${!done ? '' : 'line-through'}`, onClick: () => onClickTitle({ title }), children: title }), (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { class: "min-w-fit", children: [isEdit
                         ? (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { type: "submit", class: 'bg-blue-800 rounded-md p-1 px-2 mr-4 text-white', children: "Save" })
                         : (0,preact_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { type: "button", class: 'bg-blue-800 rounded-md p-1 px-2 mr-4 text-white', onClick: (e) => {
                                 e.preventDefault();
@@ -360,7 +360,7 @@ const Home = () => {
   \**********************/
 /***/ ((module) => {
 
-module.exports = JSON.parse('{"name":"shoppinglist","version":"1.1.5.29","description":"Shopping List","scripts":{"watch:webpack":"npx webpack --config webpack.config.js -w","watch:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --watch","watch":"npm start watch:webpack && npm start watch:tailwind","build:webpack":"npx webpack --config webpack.config.js --mode production","build:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --minify","build":"npm run build:webpack && npm run build:tailwind"},"repository":{"type":"git","url":"git+https://github.com/zwc0/ShoppingList.git"},"devDependencies":{"preact":"^10.13.2","tailwindcss":"^3.3.2","typescript":"^4.9.3","webpack":"^5.81.0","webpack-cli":"^5.0.2"},"dependencies":{"ts-loader":"^9.4.2"}}');
+module.exports = JSON.parse('{"name":"shoppinglist","version":"1.1.5.30","description":"Shopping List","scripts":{"watch:webpack":"npx webpack --config webpack.config.js -w","watch:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --watch","watch":"npm start watch:webpack && npm start watch:tailwind","build:webpack":"npx webpack --config webpack.config.js --mode production","build:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --minify","build":"npm run build:webpack && npm run build:tailwind"},"repository":{"type":"git","url":"git+https://github.com/zwc0/ShoppingList.git"},"devDependencies":{"preact":"^10.13.2","tailwindcss":"^3.3.2","typescript":"^4.9.3","webpack":"^5.81.0","webpack-cli":"^5.0.2"},"dependencies":{"ts-loader":"^9.4.2"}}');
 
 /***/ })
 
