@@ -102,10 +102,7 @@ const Home = () => {
     const currList = getCurrList(indexArr, list);
     const dragRef = useRef<HTMLDivElement>(null);
     useEffect(()=>{
-        const off = on(dragRef.current, 'touchstart', (e)=>{
-            //e.preventDefault();
-            const {clientX: xStart, clientY: yStart,} = e.touches[0];
-            const {target} = e;
+        const off = on(dragRef.current, 'pointerdown', ({clientX: xStart, clientY: yStart, target})=>{
             const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
             if (!item)
                 return;
@@ -117,10 +114,9 @@ const Home = () => {
                 offMove();
             }
 
-            const offUp = on(document.body, 'touchend', (e)=>{
+            const offUp = on(document.body, 'pointerup', (e)=>{
                 if ((+new Date() - date) < 500)
                     return clear();
-                e.preventDefault();
                 const {target} = e;
                 const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
                 if (!item)
@@ -128,7 +124,7 @@ const Home = () => {
                 const index = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
                 if (index === startIndex)
                     return clear();
-
+                e.preventDefault();
                 setList((list)=>{
                     const newList = clone(list);
                     let newCurrList;
@@ -143,9 +139,9 @@ const Home = () => {
                 clear();
             }, {passive: false});
 
-            const offMove = on(document.body, 'touchmove', (e)=>{
+            const offMove = on(document.body, 'pointermove', (e)=>{
+                const {clientY, clientX} = e;
                 e.preventDefault();
-                const {clientY, clientX} = e.touches[0];
                 if ((+new Date() - date) < (500) && (
                     (yStart - clientY) > 20
                     || (xStart - clientX) > 20
@@ -154,7 +150,7 @@ const Home = () => {
                     offMove();
                 }
             }, {passive: false});
-        }, {passive: false});
+        });
         return off;
     }, [])
 
