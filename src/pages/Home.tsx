@@ -116,12 +116,7 @@ const Home = () => {
                 offTouch();
             }
 
-            const offTouch = on(document.body, 'touchend', (e)=>{
-                const event = new Event('pointerup');
-                e.target?.dispatchEvent(event);
-            });
-
-            const offUp = on(document.body, 'pointerup', (e)=>{
+            function checkAndMove(){
                 if ((+new Date() - date) < 500)
                     return clear();
                 const target = overEl;
@@ -144,6 +139,14 @@ const Home = () => {
                     return newList;
                 });
                 clear();
+            }
+
+            const offTouch = on(document.body, 'touchend', (e)=>{
+                checkAndMove();
+            });
+
+            const offUp = on(document.body, 'pointerup', (e)=>{
+                checkAndMove();
             });
 
             const offMove = on(document.body, 'pointermove', (e)=>{
