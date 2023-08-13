@@ -102,7 +102,9 @@ const Home = () => {
     const currList = getCurrList(indexArr, list);
     const dragRef = useRef<HTMLDivElement>(null);
     useEffect(()=>{
-        const off = on(dragRef.current, 'pointerdown', ({clientX: xStart, clientY: yStart, target})=>{
+        const off = on(dragRef.current, 'pointerdown', (e)=>{
+            const {clientX: xStart, clientY: yStart, target} = e;
+            e.preventDefault();
             const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
             if (!item)
                 return;
@@ -141,6 +143,7 @@ const Home = () => {
             });
 
             const offMove = on(document.body, 'pointermove', ({clientY, clientX})=>{
+                e.preventDefault();
                 if ((+new Date() - date) < (500) && (
                     (yStart - clientY) > 20
                     || (xStart - clientX) > 20
