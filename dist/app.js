@@ -212,28 +212,31 @@ const Home = () => {
                 offMove();
             }
             const offUp = on(document.body, 'pointerup', (e) => {
+                alert('a');
+                clear();
+                return;
                 // if ((+new Date() - date) < 500)
                 //     return clear();
-                const { target } = e;
-                const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
-                if (!item)
-                    return clear();
-                const index = [...item.parentElement?.children ?? item].findIndex(e => e === item);
-                if (index === startIndex)
-                    return clear();
-                alert('a');
-                setList((list) => {
-                    const newList = clone(list);
-                    let newCurrList;
-                    setIndexArr(arr => {
-                        newCurrList = getCurrList(arr, newList);
-                        return arr;
-                    });
-                    newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
-                    console.log({ list, newList });
-                    return newList;
-                });
-                clear();
+                // const {target} = e;
+                // const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
+                // if (!item)
+                //     return clear();
+                // const index = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
+                // if (index === startIndex)
+                //     return clear();
+                // alert('a');
+                // setList((list)=>{
+                //     const newList = clone(list);
+                //     let newCurrList;
+                //     setIndexArr(arr=>{
+                //         newCurrList = getCurrList(arr, newList);
+                //         return arr;
+                //     });
+                //     newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
+                //     console.log({list, newList});
+                //     return newList;
+                // });
+                // clear();
             });
             const offMove = on(document.body, 'pointermove', ({ clientY, clientX }) => {
                 if ((+new Date() - date) < (500) && ((yStart - clientY) > 20
@@ -361,7 +364,7 @@ const Home = () => {
   \**********************/
 /***/ ((module) => {
 
-module.exports = JSON.parse('{"name":"shoppinglist","version":"1.1.5.24","description":"Shopping List","scripts":{"watch:webpack":"npx webpack --config webpack.config.js -w","watch:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --watch","watch":"npm start watch:webpack && npm start watch:tailwind","build:webpack":"npx webpack --config webpack.config.js --mode production","build:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --minify","build":"npm run build:webpack && npm run build:tailwind"},"repository":{"type":"git","url":"git+https://github.com/zwc0/ShoppingList.git"},"devDependencies":{"preact":"^10.13.2","tailwindcss":"^3.3.2","typescript":"^4.9.3","webpack":"^5.81.0","webpack-cli":"^5.0.2"},"dependencies":{"ts-loader":"^9.4.2"}}');
+module.exports = JSON.parse('{"name":"shoppinglist","version":"1.1.5.25","description":"Shopping List","scripts":{"watch:webpack":"npx webpack --config webpack.config.js -w","watch:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --watch","watch":"npm start watch:webpack && npm start watch:tailwind","build:webpack":"npx webpack --config webpack.config.js --mode production","build:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --minify","build":"npm run build:webpack && npm run build:tailwind"},"repository":{"type":"git","url":"git+https://github.com/zwc0/ShoppingList.git"},"devDependencies":{"preact":"^10.13.2","tailwindcss":"^3.3.2","typescript":"^4.9.3","webpack":"^5.81.0","webpack-cli":"^5.0.2"},"dependencies":{"ts-loader":"^9.4.2"}}');
 
 /***/ })
 

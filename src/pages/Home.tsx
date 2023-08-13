@@ -115,29 +115,32 @@ const Home = () => {
             }
 
             const offUp = on(document.body, 'pointerup', (e)=>{
+                alert('a')
+                clear();
+                return;
                 // if ((+new Date() - date) < 500)
                 //     return clear();
-                const {target} = e;
-                const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
-                if (!item)
-                    return clear();
-                const index = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
-                if (index === startIndex)
-                    return clear();
+                // const {target} = e;
+                // const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
+                // if (!item)
+                //     return clear();
+                // const index = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
+                // if (index === startIndex)
+                //     return clear();
 
-                alert('a');
-                setList((list)=>{
-                    const newList = clone(list);
-                    let newCurrList;
-                    setIndexArr(arr=>{
-                        newCurrList = getCurrList(arr, newList);
-                        return arr;
-                    });
-                    newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
-                    console.log({list, newList});
-                    return newList;
-                });
-                clear();
+                // alert('a');
+                // setList((list)=>{
+                //     const newList = clone(list);
+                //     let newCurrList;
+                //     setIndexArr(arr=>{
+                //         newCurrList = getCurrList(arr, newList);
+                //         return arr;
+                //     });
+                //     newCurrList.splice(index, 0, newCurrList.splice(startIndex, 1)[0]);
+                //     console.log({list, newList});
+                //     return newList;
+                // });
+                // clear();
             });
 
             const offMove = on(document.body, 'pointermove', ({clientY, clientX})=>{
