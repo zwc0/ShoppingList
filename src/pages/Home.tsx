@@ -102,7 +102,9 @@ const Home = () => {
     const currList = getCurrList(indexArr, list);
     const dragRef = useRef<HTMLDivElement>(null);
     useEffect(()=>{
-        const off = on(dragRef.current, 'pointerdown', ({clientX: xStart, clientY: yStart, target})=>{
+        const off = on(dragRef.current, 'touchstart', (e)=>{
+            const {clientX: xStart, clientY: yStart,} = e.touches[0];
+            const {target} = e;
             const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
             if (!item)
                 return;
@@ -114,7 +116,7 @@ const Home = () => {
                 offMove();
             }
 
-            const offUp = on(document.body, 'pointerup', (e)=>{
+            const offUp = on(document.body, 'touchend', (e)=>{
                 if ((+new Date() - date) < 500)
                     return clear();
                 const {target} = e;
@@ -139,7 +141,8 @@ const Home = () => {
                 clear();
             });
 
-            const offMove = on(document.body, 'pointermove', ({clientY, clientX})=>{
+            const offMove = on(document.body, 'touchmove', (e)=>{
+                const {clientY, clientX} = e.touches[0];
                 if ((+new Date() - date) < (500) && (
                     (yStart - clientY) > 20
                     || (xStart - clientX) > 20
