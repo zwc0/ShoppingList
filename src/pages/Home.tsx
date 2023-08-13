@@ -112,7 +112,12 @@ const Home = () => {
             function clear(){
                 offUp();
                 offMove();
+                offTouch();
             }
+
+            const offTouch = on(document.body, 'touchend', e=>{
+                alert('1');
+            });
 
             const offUp = on(document.body, 'pointerup', (e)=>{
                 if ((+new Date() - date) < 500)
@@ -124,7 +129,7 @@ const Home = () => {
                 const index = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
                 if (index === startIndex)
                     return clear();
-                e.preventDefault();
+
                 setList((list)=>{
                     const newList = clone(list);
                     let newCurrList;
@@ -137,11 +142,9 @@ const Home = () => {
                     return newList;
                 });
                 clear();
-            }, {passive: false});
+            });
 
-            const offMove = on(document.body, 'pointermove', (e)=>{
-                const {clientY, clientX} = e;
-                e.preventDefault();
+            const offMove = on(document.body, 'pointermove', ({clientY, clientX})=>{
                 if ((+new Date() - date) < (500) && (
                     (yStart - clientY) > 20
                     || (xStart - clientX) > 20
@@ -149,7 +152,7 @@ const Home = () => {
                     offUp();
                     offMove();
                 }
-            }, {passive: false});
+            });
         });
         return off;
     }, [])
