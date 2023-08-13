@@ -115,8 +115,10 @@ const Home = () => {
                 offTouch();
             }
 
-            const offTouch = on(document.body, 'touchend', e=>{
-                alert('1');
+            const offTouch = on(document.body, 'touchend', (e)=>{
+                const event = new Event('pointerup');
+                e.target?.dispatchEvent(event);
+                // alert('1');
             });
 
             const offUp = on(document.body, 'pointerup', (e)=>{
