@@ -217,6 +217,7 @@ const Home = () => {
                 const t = e.changedTouches[0];
                 const target = document.elementFromPoint(t.clientX, t.clientY);
                 lastEl = target;
+                checkAndUpdate();
                 // const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
                 // alert(item?.textContent || 'nope');
             });
