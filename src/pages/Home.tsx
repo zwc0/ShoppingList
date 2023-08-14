@@ -113,8 +113,13 @@ const Home = () => {
             function clear(){
                 offUp();
                 offMove();
+                offTouchStart();
+                offTouchMove();
             }
 
+            const offTouchStart = on(document.body, 'touchstart', e=>{
+                e.preventDefault();
+            }, {passive: false});
             const offTouchMove = on(document.body, 'touchmove', e=>{
                 e.preventDefault();
             }, {passive: false});
