@@ -118,9 +118,9 @@ const Home = () => {
             const offTouchUp = on(document.body, 'touchend', e=>{
                 // if ((+new Date() - date) < 500)
                 //     return clear();
-
+                
+                alert(JSON.stringify(e));
                 const t = e.touches[0];
-                alert(`${t.clientX}, ${t.clientY}`);
                 const target = document.elementFromPoint(t.clientX, t.clientY);
                 const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
                 //alert('test');
