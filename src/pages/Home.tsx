@@ -115,6 +115,10 @@ const Home = () => {
                 offMove();
             }
 
+            const offTouchMove = on(document.body, 'touchmove', e=>{
+                e.preventDefault();
+            }, {passive: false});
+
             const offUp = on(document.body, 'pointerup', (e)=>{
                 if ((+new Date() - date) < 500)
                     return clear();

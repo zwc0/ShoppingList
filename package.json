@@ -1,6 +1,6 @@
 {
   "name": "shoppinglist",
-  "version": "1.1.5.48",
+  "version": "1.1.5.49",
   "description": "Shopping List",
   "scripts": {
     "watch:webpack": "npx webpack --config webpack.config.js -w",
