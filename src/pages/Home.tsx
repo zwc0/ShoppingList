@@ -103,6 +103,10 @@ const Home = () => {
     const currList = getCurrList(indexArr, list);
     const dragRef = useRef<HTMLDivElement>(null);
     useEffect(()=>{
+
+        const offTouchStart = on(dragRef.current, 'touchstart', e=>{
+            e.preventDefault();
+        }, {passive: false});
         const off = on(dragRef.current, 'pointerdown', ({clientX: xStart, clientY: yStart, target})=>{
             const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
             if (!item)
@@ -113,13 +117,9 @@ const Home = () => {
             function clear(){
                 offUp();
                 offMove();
-                offTouchStart();
+                //offTouchStart();
                 offTouchMove();
             }
-
-            const offTouchStart = on(document.body, 'touchstart', e=>{
-                e.preventDefault();
-            }, {passive: false});
             const offTouchMove = on(document.body, 'touchmove', e=>{
                 e.preventDefault();
             }, {passive: false});
@@ -161,7 +161,10 @@ const Home = () => {
                 }
             });
         });
-        return off;
+        return ()=>{
+            off();
+            offTouchStart();
+        }
     }, [])
 
 	useEffect(()=>{

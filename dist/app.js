@@ -202,6 +202,9 @@ const Home = () => {
     const currList = getCurrList(indexArr, list);
     const dragRef = (0,preact_hooks__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
     (0,preact_hooks__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+        const offTouchStart = on(dragRef.current, 'touchstart', e => {
+            e.preventDefault();
+        }, { passive: false });
         const off = on(dragRef.current, 'pointerdown', ({ clientX: xStart, clientY: yStart, target }) => {
             const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
             if (!item)
@@ -211,12 +214,9 @@ const Home = () => {
             function clear() {
                 offUp();
                 offMove();
-                offTouchStart();
+                //offTouchStart();
                 offTouchMove();
             }
-            const offTouchStart = on(document.body, 'touchstart', e => {
-                e.preventDefault();
-            }, { passive: false });
             const offTouchMove = on(document.body, 'touchmove', e => {
                 e.preventDefault();
             }, { passive: false });
@@ -253,7 +253,10 @@ const Home = () => {
                 }
             });
         });
-        return off;
+        return () => {
+            off();
+            offTouchStart();
+        };
     }, []);
     (0,preact_hooks__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
         document.body.classList.toggle('dark', isDark);
@@ -371,7 +374,7 @@ const Home = () => {
   \**********************/
 /***/ ((module) => {
 
-module.exports = JSON.parse('{"name":"shoppinglist","version":"1.1.5.50","description":"Shopping List","scripts":{"watch:webpack":"npx webpack --config webpack.config.js -w","watch:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --watch","watch":"npm start watch:webpack && npm start watch:tailwind","build:webpack":"npx webpack --config webpack.config.js --mode production","build:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --minify","build":"npm run build:webpack && npm run build:tailwind"},"repository":{"type":"git","url":"git+https://github.com/zwc0/ShoppingList.git"},"devDependencies":{"preact":"^10.13.2","tailwindcss":"^3.3.2","typescript":"^4.9.3","webpack":"^5.81.0","webpack-cli":"^5.0.2"},"dependencies":{"ts-loader":"^9.4.2"}}');
+module.exports = JSON.parse('{"name":"shoppinglist","version":"1.1.5.51","description":"Shopping List","scripts":{"watch:webpack":"npx webpack --config webpack.config.js -w","watch:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --watch","watch":"npm start watch:webpack && npm start watch:tailwind","build:webpack":"npx webpack --config webpack.config.js --mode production","build:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --minify","build":"npm run build:webpack && npm run build:tailwind"},"repository":{"type":"git","url":"git+https://github.com/zwc0/ShoppingList.git"},"devDependencies":{"preact":"^10.13.2","tailwindcss":"^3.3.2","typescript":"^4.9.3","webpack":"^5.81.0","webpack-cli":"^5.0.2"},"dependencies":{"ts-loader":"^9.4.2"}}');
 
 /***/ })
 
