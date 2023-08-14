@@ -128,8 +128,6 @@ const Home = () => {
             function checkAndUpdate(){
                 const target = lastEl;
                 const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
-                alert(item?.textContent || 'nope');
-
                 if (!item)
                     return clear();
                 const index = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
