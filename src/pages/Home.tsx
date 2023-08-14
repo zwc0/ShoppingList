@@ -108,6 +108,7 @@ const Home = () => {
                 return;
             const startIndex = [...item.parentElement?.children ?? item].findIndex(e=>e===item);
             const date = +new Date();
+            let lastEl;
 
             function clear(){
                 offUp();
@@ -116,22 +117,15 @@ const Home = () => {
             }
 
             const offTouchUp = on(document.body, 'touchend', e=>{
-                // if ((+new Date() - date) < 500)
-                //     return clear();
-                
-                // alert(JSON.stringify(e.changedTouches[0]) + e.changedTouches[0].clientX + ', '
-                //     + e.changedTouches[0].clientY
-                // );
                 const t = e.changedTouches[0];
                 const target = document.elementFromPoint(t.clientX, t.clientY);
-                const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
-                alert(item?.textContent || 'nope');
+                lastEl = target;
+                // const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
+                // alert(item?.textContent || 'nope');
             });
 
-            const offUp = on(document.body, 'pointerup', (e)=>{
-                if ((+new Date() - date) < 500)
-                    return clear();
-                const {target} = e;
+            function checkAndUpdate(){
+                const target = lastEl;
                 const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
                 if (!item)
                     return clear();
@@ -151,6 +145,12 @@ const Home = () => {
                     return newList;
                 });
                 clear();
+            }
+            const offUp = on(document.body, 'pointerup', (e)=>{
+                if ((+new Date() - date) < 500)
+                    return clear();
+                lastEl = e.target;
+                checkAndUpdate();
             });
 
             const offMove = on(document.body, 'pointermove', ({clientY, clientX})=>{
