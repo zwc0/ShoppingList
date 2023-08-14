@@ -119,13 +119,13 @@ const Home = () => {
                 // if ((+new Date() - date) < 500)
                 //     return clear();
                 
-                alert(JSON.stringify(e.changedTouches[0]) + e.changedTouches[0].clientX + ', '
-                    + e.changedTouches[0].clientY
-                );
-                // const t = e.changedTouches[0];
-                // const target = document.elementFromPoint(t.clientX, t.clientY);
-                // const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
-                //alert('test');
+                // alert(JSON.stringify(e.changedTouches[0]) + e.changedTouches[0].clientX + ', '
+                //     + e.changedTouches[0].clientY
+                // );
+                const t = e.changedTouches[0];
+                const target = document.elementFromPoint(t.clientX, t.clientY);
+                const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
+                alert(item?.textContent || 'nope');
             });
 
             const offUp = on(document.body, 'pointerup', (e)=>{
