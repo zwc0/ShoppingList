@@ -116,13 +116,13 @@ const Home = () => {
             }
 
             const offTouchUp = on(document.body, 'touchend', e=>{
-                if ((+new Date() - date) < 500)
-                    return clear();
+                // if ((+new Date() - date) < 500)
+                //     return clear();
 
-                const t = e.touches[0];
-                const target = document.elementFromPoint(t.clientX, t.clientY);
-                const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
-                alert(target?.textContent || 'nope');
+                // const t = e.touches[0];
+                // const target = document.elementFromPoint(t.clientX, t.clientY);
+                // const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
+                alert('test');
             });
 
             const offUp = on(document.body, 'pointerup', (e)=>{
