@@ -224,6 +224,7 @@ const Home = () => {
             function checkAndUpdate() {
                 const target = lastEl;
                 const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
+                alert(item?.textContent || 'nope');
                 if (!item)
                     return clear();
                 const index = [...item.parentElement?.children ?? item].findIndex(e => e === item);
@@ -374,7 +375,7 @@ const Home = () => {
   \**********************/
 /***/ ((module) => {
 
-module.exports = JSON.parse('{"name":"shoppinglist","version":"1.1.5.62","description":"Shopping List","scripts":{"watch:webpack":"npx webpack --config webpack.config.js -w","watch:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --watch","watch":"npm start watch:webpack && npm start watch:tailwind","build:webpack":"npx webpack --config webpack.config.js --mode production","build:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --minify","build":"npm run build:webpack && npm run build:tailwind"},"repository":{"type":"git","url":"git+https://github.com/zwc0/ShoppingList.git"},"devDependencies":{"preact":"^10.13.2","tailwindcss":"^3.3.2","typescript":"^4.9.3","webpack":"^5.81.0","webpack-cli":"^5.0.2"},"dependencies":{"ts-loader":"^9.4.2"}}');
+module.exports = JSON.parse('{"name":"shoppinglist","version":"1.1.5.63","description":"Shopping List","scripts":{"watch:webpack":"npx webpack --config webpack.config.js -w","watch:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --watch","watch":"npm start watch:webpack && npm start watch:tailwind","build:webpack":"npx webpack --config webpack.config.js --mode production","build:tailwind":"npx tailwindcss -i ./src/styles/app.css -o ./dist/app.css --minify","build":"npm run build:webpack && npm run build:tailwind"},"repository":{"type":"git","url":"git+https://github.com/zwc0/ShoppingList.git"},"devDependencies":{"preact":"^10.13.2","tailwindcss":"^3.3.2","typescript":"^4.9.3","webpack":"^5.81.0","webpack-cli":"^5.0.2"},"dependencies":{"ts-loader":"^9.4.2"}}');
 
 /***/ })
 
