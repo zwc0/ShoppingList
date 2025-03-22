@@ -3,6 +3,7 @@ import Home from './pages/Home';
 import PWABanner from './components/PWABanner';
 import { ThemeProvider } from './context/ThemeContext';
 import { tryParseJson } from './utils/utils';
+import './app.css';
 
 const App = () => {
     return (
