@@ -1,11 +1,11 @@
 import fs from 'fs/promises';
-import { join, resolve } from "node:path";
+import { join } from "node:path";
 import {fileURLToPath, URL } from 'node:url';
 import { defineConfig, type IndexHtmlTransformResult, loadEnv, type Plugin, type ResolvedConfig } from 'vite';
 import preact from '@preact/preset-vite';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
-// import { buildSync } from "esbuild";
+import { build, buildSync } from "esbuild";
 
 function pluginPwaManifest(manifest: {}): Plugin {
   let config: ResolvedConfig;
@@ -33,39 +33,40 @@ function pluginPwaManifest(manifest: {}): Plugin {
   };
 }
 
-// function pluginPwaServiceWorker(): Plugin{
-//   let config: ResolvedConfig;
-//   return {
-//     name: 'my-plugin2:build',
-//     // apply: "build",
-//     async configResolved(_config) {
-//       config = _config;
-//     },
-//     writeBundle(){
-//       buildSync({
-//         minify: true,
-//         bundle: true,
-//         entryPoints: [path.resolve(process.cwd(), 'src', "sw.ts")],
-//         outfile: path.resolve(config.build.outDir, "sw.js"),
-//       });
-//     },
-//     configureServer(server) { // (1)
-//       return () => {
-//         server.middlewares.use(async (req, res, next) => { // (2)
-//           if (req.url !== '/sprite.svg') {
-//             return next(); // (3)
-//           }
-//           // const sprite = getSpriteContent({ pattern, prefix, svgo, currentColor });
-//           res.writeHead(200, { // (4)
-//             'Content-Type': 'text/json, charset=utf-8',
-//             'Cache-Control': 'no-cache',
-//           });
-//           res.end(sprite);
-//         });
-//       };
-//     },
-//   };
-// }
+function pluginPwaServiceWorker(): Plugin{
+  let config: ResolvedConfig;
+  const outFile = () => path.resolve(config.build.outDir, "sw.js");
+  return {
+    name: 'my-plugin2:build',
+    // apply: "build",
+    async configResolved(_config) {
+      config = _config;
+    },
+    async transformIndexHtml() {
+      await build({
+        minify: true,
+        bundle: true,
+        entryPoints: [path.resolve(process.cwd(), 'src', "sw.ts")],
+        outfile: outFile(),
+      });
+    },
+    configureServer(server){
+      return () => {
+        server.middlewares.use(async (req, res, next) => {
+          if (req.originalUrl !== path.resolve(config.base, 'sw.js')) {
+            return next();
+          }
+          
+          res.writeHead(200, {
+            'Content-Type': 'text/javascript, charset=utf-8',
+            'Cache-Control': 'no-cache',
+          });
+          res.end(await fs.readFile(outFile()));
+        });
+      };
+    }
+  };
+}
 
 // https://vite.dev/config/
 export default defineConfig(({mode})=>{
@@ -75,13 +76,10 @@ export default defineConfig(({mode})=>{
     base: env.VITE_BASE_PATH,
     build: {
 			rollupOptions: {
-				input: {
-          app: resolve(__dirname, 'index.html'),
-          'sw': resolve(__dirname,'src', 'sw.ts'), // Add your extra js file here
-        },
+				// input: './src/app',
 				output: {
 					manualChunks: undefined,
-					entryFileNames: '[name].js',
+					entryFileNames: 'app.js',
 					assetFileNames: 'app.css',
 				},
 			},
@@ -102,7 +100,7 @@ export default defineConfig(({mode})=>{
         "short_name":"Shopping List",
         "start_url":"/ShoppingList/index.html"
       }),
-      // pluginPwaServiceWorker(),
+      pluginPwaServiceWorker(),
     ],
 		resolve: {
 			alias: {
