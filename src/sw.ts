@@ -1,5 +1,5 @@
 /// <reference lib="webworker" />
-const cacheName = 'v1';
+const cacheName = 'v2';
 const cacheFiles = [
     './app.css',
     './app.js',

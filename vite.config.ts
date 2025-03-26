@@ -1,18 +1,18 @@
 import fs from 'fs/promises';
 import { join } from "node:path";
 import {fileURLToPath, URL } from 'node:url';
-import { defineConfig, loadEnv, Plugin, ResolvedConfig } from 'vite';
+import { defineConfig, type IndexHtmlTransformResult, loadEnv, type Plugin, type ResolvedConfig } from 'vite';
 import preact from '@preact/preset-vite';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
-import { buildSync } from "esbuild";
+import { build, buildSync } from "esbuild";
 
 function pluginPwaManifest(manifest: {}): Plugin {
   let config: ResolvedConfig;
 
   return {
     name: 'my-plugin:build',
-    apply: 'build',
+    // apply: 'build',
     async configResolved(_config) {
       config = _config;
     },
@@ -20,19 +20,36 @@ function pluginPwaManifest(manifest: {}): Plugin {
       const filePath = path.resolve(config.root, config.build.outDir, 'manifest.json');
       await fs.writeFile(filePath, JSON.stringify(manifest));
     },
+    transformIndexHtml(html) {
+      return [{
+        injectTo: 'head',
+        tag: 'link',
+        attrs: {
+          rel: 'manifest',
+          href: path.resolve(config.base, 'manifest.json'),
+        },
+      }];
+    }
   };
 }
 
 function pluginPwaServiceWorker(): Plugin{
+  let config: ResolvedConfig;
   return {
     name: 'my-plugin2:build',
-    apply: "build",
-    transformIndexHtml() {
-      buildSync({
+    // apply: "build",
+    async configResolved(_config) {
+      config = _config;
+    },
+    generateBundle(){
+
+    },
+    async transformIndexHtml() {
+      await build({
         minify: true,
         bundle: true,
-        entryPoints: [join(process.cwd(), 'src', "sw.ts")],
-        outfile: join(process.cwd(), "dist", "sw.js"),
+        entryPoints: [path.resolve(process.cwd(), 'src', "sw.ts")],
+        outfile: path.resolve(config.build.outDir, "sw.js"),
       });
     },
   };

@@ -14,7 +14,8 @@ export default () => {
     useEffect(() => {
         if(!('serviceWorker' in navigator))
             return;
-        navigator.serviceWorker.register('sw.js').then(reg=>{
+        console.log('register');
+        navigator.serviceWorker.register(import.meta.env.BASE_URL + '/sw.js').then(reg=>{
             if (reg.waiting)
                 return setWaitingWorker(reg.waiting);
             reg.addEventListener('updatefound', ()=>{
