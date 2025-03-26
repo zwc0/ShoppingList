@@ -257,7 +257,7 @@ const Home = () => {
 					Import
 					<input type="file" accept=".json" onChange={importList} class="hidden" />
 				</label>
-				<button type="button" onClick={exportList} class="bg-red-800 rounded-md p-1 px-2 mr-4 text-white">Export</button>
+				<button type="button" onClick={exportList} class="bg-blue-800 rounded-md p-1 px-2 mr-4 text-white">Export</button>
 				<ThemeToggle />
             </div>
             <div class="text-sm">v{pkg.version}</div>
