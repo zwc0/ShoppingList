@@ -77,7 +77,6 @@ const Home = () => {
     const [list, setList] = useState<TListItem[]>(initList());
     const [newTitle, setNewTitle] = useState<string>('');
     const [indexArr, setIndexArr] = useRouting();
-    console.log(indexArr);
     const refInputAdd = useRef<HTMLInputElement>(null);
     const currList = getCurrList(indexArr, list);
     const dragRef = useRef<HTMLDivElement>(null);
