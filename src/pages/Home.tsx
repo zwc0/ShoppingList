@@ -3,6 +3,7 @@ import { JSXInternal } from 'preact/src/jsx';
 import pkg from '../../package.json';
 import { on, tryParseJson } from '../utils/utils';
 import ThemeToggle from '../components/ThemeToggle';
+import { useRouting } from '../hooks/useRouting';
 
 type TListItem = {
     done: boolean;
@@ -75,7 +76,8 @@ const clone: <T>(json: T) => T = (json) => JSON.parse(JSON.stringify(json));
 const Home = () => {
     const [list, setList] = useState<TListItem[]>(initList());
     const [newTitle, setNewTitle] = useState<string>('');
-    const [indexArr, setIndexArr] = useState<string[]>([]);
+    const [indexArr, setIndexArr] = useRouting();
+    console.log(indexArr);
     const refInputAdd = useRef<HTMLInputElement>(null);
     const currList = getCurrList(indexArr, list);
     const dragRef = useRef<HTMLDivElement>(null);
