@@ -54,7 +54,7 @@ const ListItem = ({
 		>
 			<div class="flex items-center justify-center">
 				<input
-					class="h-5 w-5"
+					class="h-5 w-5 accent-[var(--button-bg-color)]"
 					type="checkbox"
 					checked={done}
 					onChange={() => onChangeDone({ title, done: !done })}
@@ -349,9 +349,9 @@ const Home = () => {
 				<Btn type="button" onClick={exportList}>
 					Export
 				</Btn>
+				<Settings />
 				<ThemeToggle />
 			</div>
-			<Settings />
 			<div class="text-sm">v{pkg.version}</div>
 			<div>
 				{indexArr.length > 0 && (
@@ -365,7 +365,7 @@ const Home = () => {
 				)}
 				{indexArr.join(' - ')}
 			</div>
-			<div ref={dragRef} className="grid divide-blue-800 divide-y gap-1">
+			<div ref={dragRef} className="grid divide-white divide-y gap-1">
 				{currList.map((li) => (
 					<ListItem
 						className="pt-1"
