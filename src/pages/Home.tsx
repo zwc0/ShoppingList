@@ -8,6 +8,9 @@ import SvgTrash from '../components/icons/SvgTrash';
 import SvgPencilSquare from '../components/icons/SvgPencilSquare';
 import SvgPlusCircle from '../components/icons/SvgPlusCircle';
 import SvgCheckCircle from '../components/icons/SvgCheckCircle';
+import Settings from '../features/settings';
+import Btn from '../components/base/btn';
+import { styles } from '../constants';
 
 type TListItem = {
 	done: boolean;
@@ -76,27 +79,21 @@ const ListItem = ({
 			)}
 			<div class="min-w-fit flex items-center justify-center">
 				{done ? (
-					<button
+					<Btn
 						type="button"
-						class="bg-blue-800 rounded-md p-1 px-2 text-white"
 						onClick={() => {
 							removeItem({ title });
 						}}
 					>
 						<SvgTrash />
-					</button>
+					</Btn>
 				) : isEdit ? (
-					<button
-						type="submit"
-						disabled={!newTitle}
-						class="bg-blue-800 rounded-md p-1 px-2 text-white"
-					>
+					<Btn type="submit" disabled={!newTitle}>
 						<SvgCheckCircle />
-					</button>
+					</Btn>
 				) : (
-					<button
+					<Btn
 						type="button"
-						class="bg-blue-800 rounded-md p-1 px-2 text-white"
 						onClick={(e) => {
 							e.preventDefault();
 							e.stopPropagation();
@@ -104,7 +101,7 @@ const ListItem = ({
 						}}
 					>
 						<SvgPencilSquare />
-					</button>
+					</Btn>
 				)}
 			</div>
 		</form>
@@ -338,9 +335,9 @@ const Home = () => {
 
 	return (
 		<>
-			<div class="flex flex-wrap items-center mb-2">
+			<div class="flex flex-wrap gap-2 items-center mb-2">
 				<h1 class="grow text-2xl text-center">Shopping List</h1>
-				<label class="bg-blue-800 rounded-md p-1 px-2 mr-4 text-white">
+				<label class={styles.btn}>
 					Import
 					<input
 						type="file"
@@ -349,15 +346,12 @@ const Home = () => {
 						class="hidden"
 					/>
 				</label>
-				<button
-					type="button"
-					onClick={exportList}
-					class="bg-blue-800 rounded-md p-1 px-2 mr-4 text-white"
-				>
+				<Btn type="button" onClick={exportList}>
 					Export
-				</button>
+				</Btn>
 				<ThemeToggle />
 			</div>
+			<Settings />
 			<div class="text-sm">v{pkg.version}</div>
 			<div>
 				{indexArr.length > 0 && (
@@ -395,13 +389,9 @@ const Home = () => {
 						setNewTitle(currentTarget.value);
 					}}
 				/>
-				<button
-					type="submit"
-					disabled={!newTitle}
-					class="bg-blue-800 rounded-md p-1 px-2 text-white"
-				>
+				<Btn type="submit" disabled={!newTitle}>
 					<SvgPlusCircle />
-				</button>
+				</Btn>
 			</form>
 		</>
 	);
