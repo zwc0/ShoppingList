@@ -12,6 +12,9 @@ import Settings from '../features/settings';
 import Btn from '../components/base/btn';
 import { styles } from '../constants';
 import SvgArrowsUpDown from '../components/icons/SvgArrowsUpDown';
+import SvgArrowUpOnSquare from '../components/icons/SvgArrowUpOnSquare';
+import SvgArrowDownOnSquare from '../components/icons/SvgArrowDownOnSquare';
+import SvgClipboard from '../components/icons/SvgClipboard';
 
 type TListItem = {
 	done: boolean;
@@ -326,7 +329,7 @@ const Home = () => {
 			<div class="flex flex-wrap gap-2 items-center mb-2">
 				<h1 class="grow text-2xl text-center">Shopping List</h1>
 				<label class={styles.btn}>
-					Import
+					<SvgArrowUpOnSquare class="h-6" />
 					<input
 						type="file"
 						accept=".json"
@@ -335,7 +338,17 @@ const Home = () => {
 					/>
 				</label>
 				<Btn type="button" onClick={exportList}>
-					Export
+					<SvgArrowDownOnSquare class="h-6" />
+				</Btn>
+				<Btn
+					type="button"
+					onClick={() => {
+						navigator.clipboard.writeText(
+							currList.map((x) => x.title).join('\n')
+						);
+					}}
+				>
+					<SvgClipboard class="h-6" />
 				</Btn>
 				<Settings />
 				<ThemeToggle />
