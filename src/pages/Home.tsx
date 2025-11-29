@@ -11,6 +11,7 @@ import SvgCheckCircle from '../components/icons/SvgCheckCircle';
 import Settings from '../features/settings';
 import Btn from '../components/base/btn';
 import { styles } from '../constants';
+import SvgArrowsUpDown from '../components/icons/SvgArrowsUpDown';
 
 type TListItem = {
 	done: boolean;
@@ -51,6 +52,7 @@ const ListItem = ({
 		<form
 			class={'flex gap-2 items-center ' + className}
 			onSubmit={saveNewTitle}
+			draggable
 		>
 			<div class="flex items-center justify-center">
 				<input
@@ -77,7 +79,10 @@ const ListItem = ({
 					{title}
 				</div>
 			)}
-			<div class="min-w-fit flex items-center justify-center">
+			<div class="min-w-fit flex gap-2 items-center justify-center">
+				<Btn type="button" data-drag-handle="list-item">
+					<SvgArrowsUpDown class="h-6" />
+				</Btn>
 				{done ? (
 					<Btn
 						type="button"
@@ -129,93 +134,76 @@ const Home = () => {
 	const currList = getCurrList(indexArr, list);
 	const dragRef = useRef<HTMLDivElement>(null);
 	useEffect(() => {
-		const off = on(
-			dragRef.current,
-			'pointerdown',
-			({ clientX: xStart, clientY: yStart, target }) => {
+		const off = on(dragRef.current, 'dragstart', (dragStartEvent) => {
+			const { clientX: xStart, clientY: yStart, target } = dragStartEvent;
+
+			const pressTarget = document.elementFromPoint(xStart, yStart);
+
+			console.log('dragstart', { dragStartEvent, pressTarget });
+			const handle =
+				pressTarget instanceof Element
+					? pressTarget.closest('[data-drag-handle="list-item"]')
+					: null;
+			if (!handle) {
+				dragStartEvent.preventDefault();
+				return false;
+			}
+
+			const item =
+				target instanceof HTMLFormElement
+					? target
+					: target instanceof Element
+					? target.closest('form')
+					: null;
+			if (!item) return;
+			const startIndex = [
+				...(item.parentElement?.children ?? item),
+			].findIndex((e) => e === item);
+			let lastEl;
+
+			function clear() {
+				offTouchUp();
+			}
+
+			const offTouchUp = on(document.body, 'dragend', (e) => {
+				console.log('up');
+				const target = document.elementFromPoint(e.clientX, e.clientY);
+				lastEl = target;
+				checkAndUpdate();
+			});
+
+			function checkAndUpdate() {
+				const target = lastEl;
 				const item =
 					target instanceof HTMLFormElement
 						? target
-						: target instanceof HTMLElement
+						: target instanceof Element
 						? target.closest('form')
 						: null;
-				if (!item) return;
-				const startIndex = [
+				if (!item) return clear();
+				const index = [
 					...(item.parentElement?.children ?? item),
 				].findIndex((e) => e === item);
-				const date = +new Date();
-				let lastEl;
+				if (index === startIndex) return clear();
 
-				function clear() {
-					offUp();
-					offMove();
-					offTouchUp();
-				}
-
-				const offTouchUp = on(document.body, 'touchend', (e) => {
-					const t = e.changedTouches[0];
-					const target = document.elementFromPoint(
-						t.clientX,
-						t.clientY
-					);
-					lastEl = target;
-					checkAndUpdate();
-					// const item = target instanceof HTMLFormElement ? target : target instanceof HTMLElement ? target.closest('form') : null;
-					// alert(item?.textContent || 'nope');
-				});
-
-				function checkAndUpdate() {
-					const target = lastEl;
-					const item =
-						target instanceof HTMLFormElement
-							? target
-							: target instanceof HTMLElement
-							? target.closest('form')
-							: null;
-					if (!item) return clear();
-					const index = [
-						...(item.parentElement?.children ?? item),
-					].findIndex((e) => e === item);
-					if (index === startIndex) return clear();
-
-					setList((list) => {
-						const newList = clone(list);
-						let newCurrList;
-						setIndexArr((arr) => {
-							newCurrList = getCurrList(arr, newList);
-							return arr;
-						});
-						newCurrList.splice(
-							index,
-							0,
-							newCurrList.splice(startIndex, 1)[0]
-						);
-						console.log({ list, newList });
-						return newList;
+				setList((list) => {
+					const newList = clone(list);
+					let newCurrList;
+					setIndexArr((arr) => {
+						newCurrList = getCurrList(arr, newList);
+						return arr;
 					});
-					clear();
-				}
-				const offUp = on(document.body, 'pointerup', (e) => {
-					if (+new Date() - date < 500) return clear();
-					lastEl = e.target;
-					checkAndUpdate();
+					newCurrList.splice(
+						index,
+						0,
+						newCurrList.splice(startIndex, 1)[0]
+					);
+					console.log({ list, newList });
+					return newList;
 				});
-
-				const offMove = on(
-					document.body,
-					'pointermove',
-					({ clientY, clientX }) => {
-						if (
-							+new Date() - date < 500 &&
-							(yStart - clientY > 20 || xStart - clientX > 20)
-						) {
-							offUp();
-							offMove();
-						}
-					}
-				);
+				clear();
 			}
-		);
+		});
 		return off;
 	}, []);
 
