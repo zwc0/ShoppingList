@@ -55,7 +55,6 @@ const ListItem = ({
 		<form
 			class={'flex gap-2 items-center ' + className}
 			onSubmit={saveNewTitle}
-			draggable
 		>
 			<div class="flex items-center justify-center">
 				<input
@@ -83,7 +82,7 @@ const ListItem = ({
 				</div>
 			)}
 			<div class="min-w-fit flex gap-2 items-center justify-center">
-				<Btn type="button" data-drag-handle="list-item">
+				<Btn type="button" draggable={true}>
 					<SvgArrowsUpDown class="h-6" />
 				</Btn>
 				{done ? (
@@ -140,18 +139,6 @@ const Home = () => {
 		const off = on(dragRef.current, 'dragstart', (dragStartEvent) => {
 			const { clientX: xStart, clientY: yStart, target } = dragStartEvent;
 
-			const pressTarget = document.elementFromPoint(xStart, yStart);
-
-			console.log('dragstart', { dragStartEvent, pressTarget });
-			const handle =
-				pressTarget instanceof Element
-					? pressTarget.closest('[data-drag-handle="list-item"]')
-					: null;
-			if (!handle) {
-				dragStartEvent.preventDefault();
-				return false;
-			}
-
 			const item =
 				target instanceof HTMLFormElement
 					? target
@@ -159,6 +146,16 @@ const Home = () => {
 					? target.closest('form')
 					: null;
 			if (!item) return;
+
+			const rect = item.getBoundingClientRect();
+
+			// Note: x and y are relative to where the click happened.
+			dragStartEvent.dataTransfer?.setDragImage(
+				item,
+				xStart - rect.x,
+				yStart - rect.y
+			);
+
 			const startIndex = [
 				...(item.parentElement?.children ?? item),
 			].findIndex((e) => e === item);
@@ -169,7 +166,6 @@ const Home = () => {
 			}
 
 			const offTouchUp = on(document.body, 'dragend', (e) => {
-				console.log('up');
 				const target = document.elementFromPoint(e.clientX, e.clientY);
 				lastEl = target;
 				checkAndUpdate();
@@ -201,7 +197,6 @@ const Home = () => {
 						0,
 						newCurrList.splice(startIndex, 1)[0]
 					);
-					console.log({ list, newList });
 					return newList;
 				});
 				clear();
