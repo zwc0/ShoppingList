@@ -66,7 +66,7 @@ const ListItem = ({
 			</div>
 			{isEdit ? (
 				<input
-					class="grow border border-blue-800 rounded-md text-black"
+					class="grow min-w-0 border border-blue-800 rounded-md text-black"
 					ref={refInput}
 					value={newTitle}
 					onInput={({ currentTarget }) =>
