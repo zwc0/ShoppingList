@@ -85,14 +85,6 @@ const ListItem = ({
 				<Btn type="button" draggable={true}>
 					<SvgArrowsUpDown class="h-6" />
 				</Btn>
-				<Btn
-					type="button"
-					onClick={() => {
-						navigator.clipboard.writeText(title);
-					}}
-				>
-					<SvgClipboard class="h-6" />
-				</Btn>
 				{done ? (
 					<Btn
 						type="button"
