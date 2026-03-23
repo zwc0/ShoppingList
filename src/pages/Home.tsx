@@ -53,7 +53,7 @@ const ListItem = ({
 
 	return (
 		<form
-			class={'flex gap-2 items-center ' + className}
+			class={'flex gap-2 items-center min-w-0 ' + className}
 			onSubmit={saveNewTitle}
 		>
 			<div class="flex items-center justify-center">
@@ -75,7 +75,7 @@ const ListItem = ({
 				/>
 			) : (
 				<div
-					class={`grow ${!done ? '' : 'line-through'}`}
+					class={`grow min-w-0 overflow-clip text-ellipsis ${!done ? '' : 'line-through'}`}
 					onClick={() => onClickTitle({ title })}
 				>
 					{title}
@@ -123,7 +123,7 @@ const getCurrList = (indexArr: string[], list: TListItem[]) => {
 		? list
 		: indexArr.reduce((p, c) => {
 				return p.find((l) => l.title === c)?.children ?? [];
-		  }, list);
+			}, list);
 };
 
 const clone: <T>(json: T) => T = (json) => JSON.parse(JSON.stringify(json));
@@ -143,8 +143,8 @@ const Home = () => {
 				target instanceof HTMLFormElement
 					? target
 					: target instanceof Element
-					? target.closest('form')
-					: null;
+						? target.closest('form')
+						: null;
 			if (!item) return;
 
 			const rect = item.getBoundingClientRect();
@@ -153,7 +153,7 @@ const Home = () => {
 			dragStartEvent.dataTransfer?.setDragImage(
 				item,
 				xStart - rect.x,
-				yStart - rect.y
+				yStart - rect.y,
 			);
 
 			const startIndex = [
@@ -177,8 +177,8 @@ const Home = () => {
 					target instanceof HTMLFormElement
 						? target
 						: target instanceof Element
-						? target.closest('form')
-						: null;
+							? target.closest('form')
+							: null;
 				if (!item) return clear();
 				const index = [
 					...(item.parentElement?.children ?? item),
@@ -195,7 +195,7 @@ const Home = () => {
 					newCurrList.splice(
 						index,
 						0,
-						newCurrList.splice(startIndex, 1)[0]
+						newCurrList.splice(startIndex, 1)[0],
 					);
 					return newList;
 				});
@@ -258,7 +258,7 @@ const Home = () => {
 		a.setAttribute(
 			'href',
 			'data:text/plain;charset=utf-8,' +
-				encodeURIComponent(JSON.stringify(currList))
+				encodeURIComponent(JSON.stringify(currList)),
 		);
 		a.setAttribute('download', 'ShoppingList.json');
 		a.style.display = 'none';
@@ -267,7 +267,7 @@ const Home = () => {
 		document.body.removeChild(a);
 	}
 	async function importList(
-		e: JSXInternal.TargetedEvent<HTMLInputElement, Event>
+		e: JSXInternal.TargetedEvent<HTMLInputElement, Event>,
 	) {
 		const clearInput = () => {
 			//@ts-ignore
@@ -288,13 +288,13 @@ const Home = () => {
 						'title' in e &&
 						typeof e.title === 'string' &&
 						'children' in e &&
-						Array.isArray(e.children)
+						Array.isArray(e.children),
 				)
 			) {
 				throw 'invalid object keys';
 			}
 			const wasConfirmed = confirm(
-				'Are you sure you want to import the items from this file?'
+				'Are you sure you want to import the items from this file?',
 			);
 			if (!wasConfirmed) return clearInput();
 			const newList = clone(list);
@@ -308,7 +308,7 @@ const Home = () => {
 			setList(newList);
 			if (anyFailed)
 				alert(
-					'One or more items could not be imported as an item already exists with the same name.'
+					'One or more items could not be imported as an item already exists with the same name.',
 				);
 		} catch (e) {
 			console.error(e);
@@ -339,7 +339,7 @@ const Home = () => {
 					type="button"
 					onClick={() => {
 						navigator.clipboard.writeText(
-							currList.map((x) => x.title).join('\n')
+							currList.map((x) => x.title).join('\n'),
 						);
 					}}
 				>
