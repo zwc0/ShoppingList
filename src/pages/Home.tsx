@@ -40,7 +40,7 @@ const ListItem = ({
 }) => {
 	const [isEdit, setIsEdit] = useState<boolean>(false);
 	const [newTitle, setNewTitle] = useState<string>(title);
-	const refInput = useRef<HTMLInputElement>(null);
+	const refInput = useRef<HTMLTextAreaElement>(null);
 	const saveNewTitle = (e) => {
 		e.stopPropagation();
 		e.preventDefault();
@@ -65,8 +65,8 @@ const ListItem = ({
 				/>
 			</div>
 			{isEdit ? (
-				<input
-					class="grow min-w-0 border border-blue-800 rounded-md text-black"
+				<textarea
+					class="grow min-w-0 h-8 border border-blue-800 rounded-md text-black"
 					ref={refInput}
 					value={newTitle}
 					onInput={({ currentTarget }) =>
@@ -132,7 +132,7 @@ const Home = () => {
 	const [list, setList] = useState<TListItem[]>(initList());
 	const [newTitle, setNewTitle] = useState<string>('');
 	const [indexArr, setIndexArr] = useRouting();
-	const refInputAdd = useRef<HTMLInputElement>(null);
+	const refInputAdd = useRef<HTMLTextAreaElement>(null);
 	const currList = getCurrList(indexArr, list);
 	const dragRef = useRef<HTMLDivElement>(null);
 	useEffect(() => {
@@ -377,9 +377,9 @@ const Home = () => {
 				))}
 			</div>
 			<form className="flex gap-4 pt-2" onSubmit={addItem}>
-				<input
+				<textarea
 					ref={refInputAdd}
-					class="grow border border-blue-800 rounded-md text-black"
+					class="grow h-8 border border-blue-800 rounded-md text-black"
 					value={newTitle}
 					onChange={({ currentTarget }) => {
 						setNewTitle(currentTarget.value);
